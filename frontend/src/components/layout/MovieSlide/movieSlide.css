@@ -1,0 +1,77 @@
+.movie-carousel {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    color: var(--black-color);
+    overflow-x: hidden;
+  }
+  
+  .movie-carousel > h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+.carousel-container {
+    position: relative;
+}
+
+.scroll-button.left {
+    position: absolute;
+    top: 35%;
+    left: 25px;
+    transform: translate(-50%);
+    height: 35px;
+    width: 35px;
+    font-size: 20px;
+    border: 1px solid var(--white-color);
+    color: var(--white-color);
+    border-radius: 15px;
+    cursor: pointer;
+    background-color: var(--black-color);
+}
+
+.scroll-button.right {
+    position: absolute;
+    top: 35%;
+    right: 0px;
+    transform: translate(-50%);
+    height: 35px;
+    width: 35px;
+    font-size: 20px;
+    border: 1px solid var(--white-color);
+    color: var(--white-color);
+    border-radius: 15px;
+    cursor: pointer;
+    background-color: var(--black-color);
+}
+  
+  .carousel {
+    display: flex;
+    gap: 15px;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+  }
+  
+  .carousel::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .movie {
+    flex: 0 0 auto;
+    width: 200px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--black-color);
+  }
+  
+  .movie img {
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  .movie p {
+    margin-top: 5px;
+    font-size: 14px;
+  }
+  
