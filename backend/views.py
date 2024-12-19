@@ -14,29 +14,21 @@ def isLoggedIn():
 
 @views.route('/api/login', methods=['POST'])
 def login():
-    # Parse the incoming JSON data
+
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
 
-    # Validate input
-    # if not email or not password:
-    #     return jsonify({'success': False, 'message': 'Email and password are required'}), 400
-
-    cursor = db.cursor()
-
     try:
-        # Query the database for the user
+
+        cursor = db.cursor()
+
         cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
 
         if user:
-            return jsonify({'success': True, 'message': 'Login successful'})
-
-            hashed_password = user[4]  # Assumes the password is in the 5th column
-            # Check if the provided password matches the stored hashed password
+            hashed_password = user[4]
             if hashlib.sha256(password.encode()).hexdigest() == hashed_password:
-                # Set session for the logged-in user
                 session['LoggedIn'] = True
                 return jsonify({'success': True, 'message': 'Login successful'})
             else:
@@ -44,7 +36,8 @@ def login():
         else:
             return jsonify({'success': False, 'message': 'Invalid email or password'}), 401
     finally:
-        cursor.close()  # Ensure the cursor is closed properly
+        db.close()
+        cursor.close()
 
 @views.route('/api/register', methods=['GET', 'POST'])
 def register():
@@ -55,14 +48,12 @@ def register():
         email = data.get('email')
         password = data.get('password')
 
-        # Check if the email already exists in the database
         cursor = db.cursor()
         cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
         if user:
             return jsonify({'success': False, 'message': 'Email already exists'}), 409
 
-        # Hash the password before storing it in the database
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
         cursor.execute("INSERT INTO users (firstname, lastname, email, password) VALUES (%s, %s, %s, %s)", (firstname, lastname, email, hashed_password))
@@ -71,3 +62,4 @@ def register():
         return jsonify({'success': True})
     finally:
         db.close()
+        cursor.close()

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './header.css';
 import hamburger from '../../../assets/images/hamburger-menu.png';
+import LoginCheck from '../LoginCheck/LoginCheck.js';
 
 function Header() {
 
@@ -27,15 +28,21 @@ function Header() {
             </ul>
           </div>
           
-
-          <div>
-            <Link className='profile' to="/profile">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Profile-picture" />
-            </Link>
-            <Link className='hamburger' to="/profile">
-              <img src={hamburger} alt="hamburger-image" onClick={toggleSlideMenu} />
-            </Link>
-          </div>
+          { LoginCheck() ? (
+            <div>
+                They are logged in 
+            </div>
+          ) : (
+            <div>
+              <Link className='profile' to="/profile">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Profile-picture" />
+              </Link>
+              <Link className='hamburger' to="/profile">
+                <img src={hamburger} alt="hamburger-image" onClick={toggleSlideMenu} />
+              </Link>
+            </div>
+          )}
+          
         </aside>
       </header>
 

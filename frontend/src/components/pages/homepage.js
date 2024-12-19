@@ -68,12 +68,12 @@ function App() {
 
   return (
     <>
-        <Login/>
-        {/* <Hero/>
+        {/* <Login/> */}
+        <Hero/>
         <MovieSlider Title="Comedy" movies={comedyMovies} />
         <MovieSlider Title="Action" movies={actionMovies} />
         <MovieSlider Title="Drama" movies={dramaMovies} />
-        <MovieSlider Title="SciFi" movies={sciFiMovies} /> */}
+        <MovieSlider Title="SciFi" movies={sciFiMovies} />
     </>
   );
 }

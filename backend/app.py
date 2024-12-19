@@ -5,6 +5,8 @@ import os
 from views import views
 
 app = Flask(__name__, static_folder='../frontend/build')
+app.secret_key = 'Rayan'
+
 # Update CORS to allow specific origins and support credentials
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000", "supports_credentials": True}},
      allow_headers=["Content-Type", "Authorization"],

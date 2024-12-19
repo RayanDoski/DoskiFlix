@@ -34,15 +34,14 @@ function Login() {
       
       const data = await response.json(); // Parse JSON response
   
-      if (response.ok && data.success) {
+      if (data.success) {
         setErrorMessage(''); // Clear any previous errors
         alert(data.message); // Display success message
         window.location.href = '/profile'; // Redirect to profile page
       } else {
         setErrorMessage(data.message || 'Login failed');
       }
-    } catch (error) {
-      console.error('Error during login:', error);
+    } catch {
       setErrorMessage('An error occurred while logging in. Please try again.');
     }
   };

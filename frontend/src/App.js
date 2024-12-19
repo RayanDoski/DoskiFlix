@@ -3,6 +3,7 @@
 import './assets/styles/universal.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/layout/Header/header.js';
+import Footer from './components/layout/Footer/footer.js';
 import Homepage from './components/pages/homepage.js'
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/latest" element={<div>Latest Content</div>} />
           <Route path="/my-list" element={<div>My List Content</div>} />
         </Routes>
+        <Footer />
     </Router>
   );
 }
