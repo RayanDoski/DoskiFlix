@@ -3,25 +3,25 @@ import { Link } from 'react-router-dom';
 import './movieSlide.css';
 import Loading from '../Loading/loading.js';
 
-  function MovieCarousel({ Title, movies })  {
+ 
+function MovieCarousel({ Title, movies }) {
+  const [moviesData, setMoviesData] = useState([]);
 
-    const [moviesData, setMoviesData] = useState([]); // Initialize as an array
+  const generateMovies = () => {
+    // Shuffle the movies array and select the first 13 unique titles
+    const shuffledMovies = [...movies].sort(() => 0.5 - Math.random());
+    const selectedMovies = shuffledMovies.slice(0, 13);
 
-    const generateMovies = () => {
-        const randomTitles = Array.from(
-        { length: 13 },
-        () => movies[Math.floor(Math.random() * movies.length)]
-        );
-        Promise.all(
-        randomTitles.map((title) =>
-            fetch(`https://www.omdbapi.com/?t=${title}&apikey=72ced4bc`)
-        )
-        )
-        .then((responses) => Promise.all(responses.map((response) => response.json())))
-        .then((dataArray) => {
-            setMoviesData(dataArray);
-        });
-    };
+    Promise.all(
+      selectedMovies.map((title) =>
+        fetch(`https://www.omdbapi.com/?t=${title}&apikey=72ced4bc`)
+      )
+    )
+      .then((responses) => Promise.all(responses.map((response) => response.json())))
+      .then((dataArray) => {
+        setMoviesData(dataArray);
+      });
+  };
 
     useEffect(() => {
         generateMovies();
