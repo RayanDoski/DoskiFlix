@@ -67,6 +67,42 @@ header > aside > div > .hamburger > img {
     display: none;
 }
 
+header > aside > div > aside {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header > aside > div > aside > .login {
+    padding: 10px 40px;
+    border-radius: 5px;
+    border: 0;
+    background-color: var(--red-color);
+    color: var(--white-color);
+    cursor: pointer;
+    transition: .5s;
+}
+
+header > aside > div > aside > .register {
+    padding: 10px 40px;
+    border-radius: 5px;
+    border: 0;
+    background-color: var(--white-color);
+    color: var(--black-color);
+    cursor: pointer;
+    transition: .5s;
+}
+
+header > aside > div > aside > .login:hover {
+    background-color: var(--white-color);
+    color: var(--black-color);
+}
+
+header > aside > div > aside > .register:hover {
+    background-color: var(--red-color);
+    color: var(--white-color);
+}
+
 @media (max-width: 900px) {
 
     header {

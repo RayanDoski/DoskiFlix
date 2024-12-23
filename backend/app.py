@@ -5,7 +5,9 @@ import os
 from views import views
 
 app = Flask(__name__, static_folder='../frontend/build')
-app.secret_key = 'Rayan'
+app.secret_key = 'DoskiFlix12345'
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = True
 
 # Update CORS to allow specific origins and support credentials
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000", "supports_credentials": True}},

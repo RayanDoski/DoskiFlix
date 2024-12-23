@@ -1,0 +1,57 @@
+/* Wrapper styling */
+#wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* Profile section */
+#profileDesign {
+    flex: 1;
+    min-width: 300px;
+    max-width: 30%;
+    background: white;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Stacked columns container */
+#stackedColumns {
+    flex: 1;
+    min-width: 300px;
+    max-width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Individual column styling */
+.column {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #profileDesign, #stackedColumns {
+        max-width: 90%;
+    }
+
+    #stackedColumns {
+        width: 100%;
+    }
+}

@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import './header.css';
 import hamburger from '../../../assets/images/hamburger-menu.png';
 import LoginCheck from '../LoginCheck/LoginCheck.js';
+import Login from '../../pages/popupLogin.js'
 
 function Header() {
 
   const [isOpen, setIsOpen] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   const toggleSlideMenu = () => {
     setIsOpen(!isOpen);
@@ -14,6 +16,8 @@ function Header() {
 
   return (
     <>
+
+      {showLogin && <Login/>}
 
       <header>
         <aside>
@@ -30,16 +34,18 @@ function Header() {
           
           { LoginCheck() ? (
             <div>
-                They are logged in 
-            </div>
-          ) : (
-            <div>
               <Link className='profile' to="/profile">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Profile-picture" />
               </Link>
               <Link className='hamburger' to="/profile">
                 <img src={hamburger} alt="hamburger-image" onClick={toggleSlideMenu} />
               </Link>
+            </div>
+          ) : (
+            <div>
+              <aside>
+                <button className='login' onClick={() => setShowLogin(true)}>Join Doskiflix</button>
+              </aside>
             </div>
           )}
           

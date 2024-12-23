@@ -68,7 +68,6 @@ function App() {
 
   return (
     <>
-        {/* <Login/> */}
         <Hero/>
         <MovieSlider Title="Comedy" movies={comedyMovies} />
         <MovieSlider Title="Action" movies={actionMovies} />

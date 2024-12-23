@@ -1,9 +1,12 @@
 from flask import Blueprint, jsonify, request, session 
-import hashlib
-from db import db
+import json, os, hashlib
 
 # Create the blueprint
 views = Blueprint('views', __name__)
+
+# @views.route('/api/hddd', methods=['POST'])
+# def dd():
+#     return "awdawdadawd"
 
 @views.route('/api/isloggedin', methods=['GET', 'POST'])
 def isLoggedIn():
@@ -14,30 +17,36 @@ def isLoggedIn():
 
 @views.route('/api/login', methods=['POST'])
 def login():
-
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
 
-    try:
+    json_file = 'user.json'
 
-        cursor = db.cursor()
+    # Read existing users
+    with open(json_file, 'r') as f:
+        users = json.load(f)
 
-        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
-        user = cursor.fetchone()
+        # Look for a user with the matching email
+        user = None
+        for u in users:
+            if u['email'] == email:
+                user = u
+                break
 
         if user:
-            hashed_password = user[4]
-            if hashlib.sha256(password.encode()).hexdigest() == hashed_password:
+            # Hash the incoming password and compare with stored hash
+            hashed_input_password = hashlib.sha256(password.encode()).hexdigest()
+            if hashed_input_password == user.get('password'):
+                # If passwords match, mark session as logged in
                 session['LoggedIn'] = True
-                return jsonify({'success': True, 'message': 'Login successful'})
+                return jsonify({'success': True, 'message': 'Login successful'}), 200
             else:
+                # If password mismatch
                 return jsonify({'success': False, 'message': 'Invalid email or password'}), 401
         else:
+            # If no user found with that email
             return jsonify({'success': False, 'message': 'Invalid email or password'}), 401
-    finally:
-        db.close()
-        cursor.close()
 
 @views.route('/api/register', methods=['GET', 'POST'])
 def register():
@@ -48,18 +57,42 @@ def register():
         email = data.get('email')
         password = data.get('password')
 
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
-        user = cursor.fetchone()
-        if user:
-            return jsonify({'success': False, 'message': 'Email already exists'}), 409
+        # JSON file path
+        json_file = 'user.json'
 
+        # If the file does not exist, create it and initialize with empty list
+        if not os.path.exists(json_file):
+            with open(json_file, 'w') as f:
+                json.dump([], f)
+
+        # Read existing users
+        with open(json_file, 'r') as f:
+            users = json.load(f)
+
+        # Check if the email already exists
+        for user in users:
+            if user['email'] == email:
+                return jsonify({'success': False, 'message': 'Email already exists'}), 409
+
+        # Hash the password
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
-        cursor.execute("INSERT INTO users (firstname, lastname, email, password) VALUES (%s, %s, %s, %s)", (firstname, lastname, email, hashed_password))
-        db.commit()
+        # Create new user object
+        new_user = {
+            "firstname": firstname,
+            "lastname": lastname,
+            "email": email,
+            "password": hashed_password
+        }
 
-        return jsonify({'success': True})
-    finally:
-        db.close()
-        cursor.close()
+        # Append to list
+        users.append(new_user)
+
+        # Write the updated list back to the file
+        with open(json_file, 'w') as f:
+            json.dump(users, f, indent=4)
+
+        return jsonify({'success': True}), 200
+    except Exception as e:
+        # In case of any unexpected error, return a 500 response
+        return jsonify({'success': False, 'message': str(e)}), 500

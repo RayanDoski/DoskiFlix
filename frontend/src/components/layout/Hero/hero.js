@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './hero.css';
 import Loading from '../Loading/loading.js';
+import LoginCheck from '../LoginCheck/LoginCheck.js';
 
 function HeroSection() {
 
@@ -137,11 +138,14 @@ function HeroSection() {
                 <p className='rating'>Rating {movieData["imdbRating"]}/10</p>
                 <p>{movieData["Plot"]}</p>
                 <Link className='viewMoreBtn' to={`/details/${movieData["imdbID"]}`}>View More</Link>
+                { LoginCheck() ? (
                 <div>
                     <button className='watchlist' >Add To Watchlist &#43;</button>
                     <button className='likeBtn' >Like</button>
                     <button className='dislikeBtn' >Dislike</button>
                 </div>
+                ) : (<div></div>)
+              }
             </div>
         </section>
     </>
