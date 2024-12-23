@@ -4,10 +4,6 @@ import json, os, hashlib
 # Create the blueprint
 views = Blueprint('views', __name__)
 
-# @views.route('/api/hddd', methods=['POST'])
-# def dd():
-#     return "awdawdadawd"
-
 @views.route('/api/isloggedin', methods=['GET', 'POST'])
 def isLoggedIn():
     if 'LoggedIn' in session:
@@ -95,4 +91,4 @@ def register():
         return jsonify({'success': True}), 200
     except Exception as e:
         # In case of any unexpected error, return a 500 response
-        return jsonify({'success': False, 'message': str(e)}), 500
+        return jsonify({'success': False}), 500
