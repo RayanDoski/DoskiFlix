@@ -127,6 +127,79 @@ function HeroSection() {
     generateRandomMovie();
   }, []);
 
+  const handleWatchlistClick = async (imdbID) => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/movie/watchlist/add', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ imdbID }), // pass imdbID in the request body
+      });
+      
+      const data = await response.json();
+  
+      // handle response data here if needed
+
+      if (data.m) {
+        alert(data.m)
+      }
+  
+    } catch (error) {
+      console.error('Error adding movie to watchlist:', error);
+    }
+  };
+
+  const handleMovieLikeClick = async (imdbID) => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/movie/like/add', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ imdbID }), // pass imdbID in the request body
+      });
+      
+      const data = await response.json();
+  
+      // handle response data here if needed
+
+      if (data.m) {
+        alert(data.m)
+      }
+  
+    } catch (error) {
+      console.error('Error adding movie to watchlist:', error);
+    }
+  };
+
+  const handleMovieDislikeClick = async (imdbID) => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/movie/dislike/add', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ imdbID }), // pass imdbID in the request body
+      });
+      
+      const data = await response.json();
+  
+      // handle response data here if needed
+
+      if (data.m) {
+        alert(data.m)
+      }
+  
+    } catch (error) {
+      console.error('Error adding movie to watchlist:', error);
+    }
+  };
+  
+
   return (
     <>
         { showLoading ? <Loading/> : ''}
@@ -140,9 +213,9 @@ function HeroSection() {
                 <Link className='viewMoreBtn' to={`/details/${movieData["imdbID"]}`}>View More</Link>
                 { LoginCheck() ? (
                 <div>
-                    <button className='watchlist' >Add To Watchlist &#43;</button>
-                    <button className='likeBtn' >Like</button>
-                    <button className='dislikeBtn' >Dislike</button>
+                    <button className='watchlist' onClick={() => handleWatchlistClick(movieData["imdbID"])}>Add To Watchlist &#43;</button>
+                    <button className='likeBtn' onClick={() => handleMovieLikeClick(movieData["imdbID"])}>Like</button>
+                    <button className='dislikeBtn' onClick={() => handleMovieDislikeClick(movieData["imdbID"])}>Dislike</button>
                 </div>
                 ) : (<div></div>)
               }

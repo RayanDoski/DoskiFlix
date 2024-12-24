@@ -40,6 +40,114 @@
     text-align: center;
 }
 
+#likedDesign > ul,
+#dislikedDesign > ul,
+#watchlistDesign > ul {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#likedDesign > ul > hr,
+#dislikedDesign > ul > hr,
+#watchlistDesign > ul > hr {
+    width: 100%;
+    height: .5px;
+    background-color: var(--black-color);
+}
+
+#likedDesign > ul > li,
+#dislikedDesign > ul > li,
+#watchlistDesign > ul > li {
+    margin: auto;
+    display: flex;
+    align-content: center;
+    gap: 40px;
+}
+
+#likedDesign > ul > li > aside,
+#dislikedDesign > ul > li > aside,
+#watchlistDesign > ul > li > aside {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 350px;
+}
+
+#likedDesign > ul > li > aside > div,
+#dislikedDesign > ul > li > aside > div,
+#watchlistDesign > ul > li > aside > div {
+    display: flex;
+    flex-direction: column;
+}
+
+#likedDesign > ul > li > aside > div > h4,
+#dislikedDesign > ul > li > aside > div > h4,
+#watchlistDesign > ul > li > aside > div > h4 {
+    font-family: 22px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+    text-align: left;
+}
+
+#likedDesign > ul > li > aside > p,
+#dislikedDesign > ul > li > aside > p,
+#watchlistDesign > ul > li > aside > p {
+    cursor: pointer;
+    margin: 0;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+#likedDesign > ul > li > aside > div > p,
+#dislikedDesign > ul > li > aside > div > p,
+#watchlistDesign > ul > li > aside > div > p {
+    margin: 0 0 5px 0;
+    font-size: 12px;
+    text-align: left;
+}
+
+#watchlistDesign > ul > li > aside > div > article {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 10px 0 0 0;
+}
+
+#watchlistDesign > ul > li > aside > div > article > .likeBtn,
+#watchlistDesign > ul > li > aside > div > article > .dislikeBtn {
+    flex-grow: 1;
+    padding: 5px 20px;
+    border-radius: 5px;
+    border: 1px solid var(--black-color);
+    background-color: transparent;
+    cursor: pointer;
+    transition: .5s;
+}
+
+#watchlistDesign > ul > li > aside > div > article > .likeBtn:hover {
+    background-color: green;
+    color: var(--white-color);
+    border: 1px solid var(--white-color);
+}
+
+#watchlistDesign > ul > li > aside > div > article > .dislikeBtn:hover {
+    background-color: var(--red-color);
+    color: var(--white-color);
+    border: 1px solid var(--white-color);
+}
+
+#watchlistDesign > ul > li > aside > div > article > .watchlist:hover {
+    background-color: var(--black-color);
+    color: var(--white-color);
+    border: 1px solid var(--white-color);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     #wrapper {

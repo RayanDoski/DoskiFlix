@@ -1,0 +1,17 @@
+[
+    {
+        "email": "Rayan.d15@outlook.com",
+        "movie": "tt0167260",
+        "like": false
+    },
+    {
+        "email": "Rayan.d15@outlook.com",
+        "movie": "tt0101414",
+        "like": true
+    },
+    {
+        "email": "Rayan.d15@outlook.com",
+        "movie": "tt1217209",
+        "like": true
+    }
+]

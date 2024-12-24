@@ -3,6 +3,8 @@ from flask_cors import CORS
 import os 
 
 from views import views
+from loginSystem import loginSystem
+from movie import movie
 
 app = Flask(__name__, static_folder='../frontend/build')
 app.secret_key = 'DoskiFlix12345'
@@ -13,8 +15,11 @@ app.config['SESSION_COOKIE_SECURE'] = True
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000", "supports_credentials": True}},
      allow_headers=["Content-Type", "Authorization"],
      methods=["GET", "POST", "OPTIONS"])
+
 # Register blueprint
 app.register_blueprint(views)
+app.register_blueprint(loginSystem)
+app.register_blueprint(movie)
 
 # Serve React App
 @app.route('/', defaults={'path': ''})
