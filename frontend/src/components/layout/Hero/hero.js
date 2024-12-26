@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Form, Link } from 'react-router-dom';
 import './hero.css';
 import Loading from '../Loading/loading.js';
 import LoginCheck from '../LoginCheck/LoginCheck.js';
+
+// functionality
+import handleMovieLikeClick from '../../functionality/like.js'
+import handleMovieDislikeClick from '../../functionality/dislike.js'
 
 function HeroSection() {
 
@@ -150,55 +154,6 @@ function HeroSection() {
       console.error('Error adding movie to watchlist:', error);
     }
   };
-
-  const handleMovieLikeClick = async (imdbID) => {
-    try {
-      const response = await fetch('http://127.0.0.1:8000/api/movie/like/add', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ imdbID }), // pass imdbID in the request body
-      });
-      
-      const data = await response.json();
-  
-      // handle response data here if needed
-
-      if (data.m) {
-        alert(data.m)
-      }
-  
-    } catch (error) {
-      console.error('Error adding movie to watchlist:', error);
-    }
-  };
-
-  const handleMovieDislikeClick = async (imdbID) => {
-    try {
-      const response = await fetch('http://127.0.0.1:8000/api/movie/dislike/add', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ imdbID }), // pass imdbID in the request body
-      });
-      
-      const data = await response.json();
-  
-      // handle response data here if needed
-
-      if (data.m) {
-        alert(data.m)
-      }
-  
-    } catch (error) {
-      console.error('Error adding movie to watchlist:', error);
-    }
-  };
-  
 
   return (
     <>

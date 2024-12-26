@@ -1,20 +1,23 @@
 [
     {
-        "firstname": "shaho",
-        "lastname": "Bradostin",
+        "firstname": "Bruce",
+        "lastname": "Wayne",
         "email": "shaho@gmail.com",
-        "password": "938db8c9f82c8cb58d3f3ef4fd250036a48d26a712753d2fde5abd03a85cabf4"
+        "password": "938db8c9f82c8cb58d3f3ef4fd250036a48d26a712753d2fde5abd03a85cabf4",
+        "profileImg": "defaultAvatar.png"
     },
     {
         "firstname": "Reyan",
         "lastname": "Doski",
         "email": "Rayan.d15@outlook.com",
-        "password": "938db8c9f82c8cb58d3f3ef4fd250036a48d26a712753d2fde5abd03a85cabf4"
+        "password": "938db8c9f82c8cb58d3f3ef4fd250036a48d26a712753d2fde5abd03a85cabf4",
+        "profileImg": "defaultAvatar.png"
     },
     {
         "firstname": "amjad",
         "lastname": "sharkawi",
         "email": "amjad@gmail.com",
-        "password": "a953f09a1b6b6725b81956e9ad0b1eb49e3ad40004c04307ef8af6246a054116"
+        "password": "a953f09a1b6b6725b81956e9ad0b1eb49e3ad40004c04307ef8af6246a054116",
+        "profileImg": "defaultAvatar.png"
     }
 ]

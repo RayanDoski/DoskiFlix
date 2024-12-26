@@ -148,6 +148,88 @@
     border: 1px solid var(--white-color);
 }
 
+/* profile design start */
+
+#profileDesign > .profile-card {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#profileDesign > .profile-card > form {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-direction: column;
+    width: 100%;
+}
+
+#profileDesign > .profile-card > img {
+    max-width: 125px;
+}
+
+#profileDesign > .profile-card > h2 {
+    margin: 0;
+    color: var(--black-color);
+}
+
+#profileDesign > .profile-card > form > input {
+    border: 0;
+    padding: 5px 20px;
+    border-bottom: 1px solid var(--black-color);
+    font-size: 16px;
+    outline: 0;
+}
+
+  /* Hide the default file input */
+  .profileImg-file {
+    display: none;
+  }
+  
+  /* Custom label acts as the "button" */
+  .profileImg-label {
+    display: inline-block;
+    background-color: transparent; /* Netflix red */
+    border: 1px solid var(--black-color);
+    color: var(--black-color);
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 12px;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  /* Hover effect: a slightly lighter Netflix red */
+  .profileImg-label:hover {
+    background-color: var(--black-color);
+    color: var(--white-color);
+
+  }
+  
+  /* Optional: Add focus or active states if you want more feedback */
+  .profileImg-label:active,
+  .profileImg-label:focus {
+    outline: none;
+    background-color: #af040e;
+  }
+
+#profileDesign > .profile-card > form > button {
+    background-color: var(--red-color);
+    border: var(--white-color) 1px solid;
+    color: var(--white-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: 0.5s ease-in-out;
+    cursor: pointer;
+}
+
+#profileDesign > .profile-card > form > button:hover {
+    padding: 12px 24px;
+}
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
     #wrapper {
