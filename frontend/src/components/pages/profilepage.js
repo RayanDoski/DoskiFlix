@@ -336,7 +336,23 @@ function ProfilePage() {
                         ))}
                     </ul>
                 </div>
-
+                <div className="column" id="watchlistDesign">
+                    <button type="submit" className="generate" onClick={async () => {}}>Generate movie tips</button>
+                        <ul>
+                            {movies.map((movie, index) => (
+                                <li key={index}>
+                                    <img src={movie.Poster} alt={`${movie.Title} Poster`} style={{ width: '100px' }}/>
+                                    <aside>
+                                        <div>
+                                            <h4>{movie.Title}</h4>
+                                            <p>Rating: {movie.imdbRating}/10</p>
+                                            <p>Year: {movie.Year}</p>
+                                        </div>
+                                    </aside>
+                                </li>
+                            ))}
+                        </ul>
+                </div>
             </div>
         </div>
     );

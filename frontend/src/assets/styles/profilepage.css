@@ -229,6 +229,30 @@
     padding: 12px 24px;
 }
 
+/*Generate movie button*/
+.generate {
+    background-color: #4caf50; /* Green background */
+    color: white; /* White text */
+    font-size: 16px; /* Font size */
+    padding: 10px 20px; /* Padding */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+  }
+  
+.generate:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Elevated shadow on hover */
+  }
+  
+.generate:active {
+    background-color: #3e8e41; /* Even darker green when clicked */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); /* Pressed shadow effect */
+    transform: translateY(1px); /* Slight press-down effect */
+  }
+  
 
 /* Responsive Design */
 @media (max-width: 768px) {
