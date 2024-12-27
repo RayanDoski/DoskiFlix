@@ -1,0 +1,60 @@
+.footer-container {
+    background-color: #222;
+    color: #fff;
+    padding: 20px 0;
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between; /* Dela upp vänster och höger sida */
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+  
+  .footer-left,
+  .footer-right {
+    display: flex;
+    flex-direction: column; /* Stapla sektioner vertikalt */
+  }
+  
+  .footer-left {
+    align-items: flex-start; /* Justera vänsterinnehåll till vänster */
+  }
+  
+  .footer-right {
+    align-items: flex-end; /* Justera högerinnehåll till höger */
+  }
+  
+  .footer-section {
+    margin: 10px 0; /* Lättare justering mellan sektioner */
+  }
+  
+  .footer-section h4 {
+    border-bottom: 2px solid #fff;
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+  
+  .footer-links {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .footer-links li {
+    margin: 5px 0;
+  }
+  
+  .footer-links a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+  
+  .footer-bottom {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #ccc;
+  }
