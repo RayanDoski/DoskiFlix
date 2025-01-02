@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import '../../assets/styles/profilepage.css';
+import Loading from '../layout/Loading/loading.js';
 
 // functionality
 import handleMovieLikeClick from '../functionality/like.js'
@@ -13,6 +14,8 @@ function ProfilePage() {
     const [likedMovies, setLikedMovies] = useState([]);
     const [dislikedMovies, setDislikedMovies] = useState([]);
     const [userInfo, setUserInfo] = useState([]);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [showLoading, setShowLoading] = useState(false)
 
     // 1) Define the function in top-level component scope
     const fetchWatchlistAndMovies = async () => {
@@ -110,6 +113,7 @@ function ProfilePage() {
         fetchDislikedMovies();
         fetchLikedMovies();
         getUserInfo()
+        setShowLoading(false)
     }, []);
 
 
@@ -180,7 +184,7 @@ function ProfilePage() {
     };
 
     // For profile
-    const getUserInfo = async (imdbID) => {
+    const getUserInfo = async () => {
         try {
           const response = await fetch('http://127.0.0.1:8000/api/get/user/info', {
             method: 'POST',
@@ -201,40 +205,74 @@ function ProfilePage() {
         }
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setSelectedFile(file);
+        
+        // Generate unique filename
+        const timestamp = Date.now();
+        const uniqueFileName = `${timestamp}_${file.name}`;
+        
+        // Update userInfo with new filename
+        setUserInfo(prev => ({
+          ...prev,
+          profileImg: uniqueFileName
+        }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/update/user/info", {
-                method: "POST",
-                credentials: 'include',
-                headers: {
-                "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    firstname: userInfo.firstname,
-                    lastname: userInfo.lastname,
-                    email: userInfo.email,
-                }),
+          // First, upload the file if one is selected
+          if (selectedFile) {
+            const formData = new FormData();
+            formData.append("file", selectedFile);
+            formData.append("filename", userInfo.profileImg);
+    
+            const uploadResponse = await fetch("http://127.0.0.1:8000/api/update/user/profile/img", {
+              method: "POST",
+              credentials: 'include',
+              body: formData
             });
-
-            const data = await response.json();
-
-            if (data.success) {
-                getUserInfo()
+    
+            if (!uploadResponse.ok) {
+              throw new Error('Failed to upload image');
             }
-
+          }
+    
+          // Then update other user info
+          const response = await fetch("http://127.0.0.1:8000/api/update/user/info", {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              firstname: userInfo.firstname,
+              lastname: userInfo.lastname,
+              email: userInfo.email,
+              profileImg: userInfo.profileImg
+            }),
+          });
+    
+          const data = await response.json();
+          if (data.success) {
+            window.location.reload();
+          }
         } catch (error) {
-            console.error("Error:", error);
+          console.error("Error:", error);
         }
     };
-    
+
     return (
+        <>
+        { showLoading ? <Loading/> : ''}
         <div id="wrapper">
             <div id="profileDesign">
                 <div className="profile-card">
-                    <img src={`../../assets/images/${userInfo.profileImg}`} alt="Profile Photo" className="profile-image" />
-                    <h2 className="profile-title">{userInfo.firstname} {userInfo.lastname} {userInfo.profileImg}</h2>
+                    <img src={`/profile_img/${userInfo.profileImg}`} alt="Profile Photo" className="profile-image" />
+                    <h2 className="profile-title">{userInfo.firstname} {userInfo.lastname}</h2>
 
                     <form onSubmit={handleSubmit}>
                         <input
@@ -265,8 +303,9 @@ function ProfilePage() {
                             type="file"
                             id="profileImgFile"
                             className="profileImg-file"
+                            onChange={handleFileChange}
                         />
-                        <label htmlFor="profileImgFile" className="profileImg-label">
+                        <label htmlFor="profileImgFile" className="profileImg-label" >
                             Upload Photo
                         </label>
 
@@ -339,6 +378,7 @@ function ProfilePage() {
 
             </div>
         </div>
+        </>
     );
 }
 

@@ -9,10 +9,38 @@ function Header() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [userInfo, setUserInfo] = useState([]);
 
   const toggleSlideMenu = () => {
     setIsOpen(!isOpen);
   }
+
+  // For profile
+  const getUserInfo = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/get/user/info', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      const data = await response.json();
+  
+      if (data.success) {
+        setUserInfo(data.info)
+      }
+  
+    } catch (error) {
+      console.error('error', error);
+    }
+  };
+
+  // get the info
+  useEffect(() => {
+    getUserInfo()
+  }, []);
 
   return (
     <>
@@ -35,7 +63,7 @@ function Header() {
           { LoginCheck() ? (
             <div>
               <Link className='profile' to="/profile">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Profile-picture" />
+                <img src={`/profile_img/${userInfo.profileImg}`} alt="Profile-picture" />
               </Link>
               <Link className='hamburger' to="/profile">
                 <img src={hamburger} alt="hamburger-image" onClick={toggleSlideMenu} />
