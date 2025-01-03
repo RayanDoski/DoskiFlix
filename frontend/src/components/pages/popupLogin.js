@@ -36,7 +36,6 @@ function Login() {
   
       if (data.success) {
         setErrorMessage(''); // Clear any previous errors
-        alert(data.message); // Display success message
         window.location.href = '/profile'; // Redirect to profile page
       } else {
         setErrorMessage(data.message || 'Login failed');

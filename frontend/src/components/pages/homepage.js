@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Hero from '../layout/Hero/hero.js';
 import MovieSlider from '../layout/MovieSlide/movieSlide.js'
 import Login from './popupLogin.js'
+import Message from '../layout/popupMessage/popupMessage.js';
 
 function App() {
 

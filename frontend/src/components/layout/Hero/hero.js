@@ -3,6 +3,7 @@ import { Form, Link } from 'react-router-dom';
 import './hero.css';
 import Loading from '../Loading/loading.js';
 import LoginCheck from '../LoginCheck/LoginCheck.js';
+import Message from '../popupMessage/popupMessage.js';
 
 // functionality
 import handleMovieLikeClick from '../../functionality/like.js'
@@ -12,6 +13,7 @@ function HeroSection() {
 
   const [movieData, setMovieData] = useState({});
   const [showLoading, setShowLoading] = useState(false)
+  const [showMessage, setShowMessage] = useState(false);
 
   const movies = [
     "The Godfather",
@@ -158,6 +160,7 @@ function HeroSection() {
   return (
     <>
         { showLoading ? <Loading/> : ''}
+        { showMessage ? <Message message='Added'/> : ''}
         <section className='heroSection'>
             <button onClick={generateRandomMovie}>Generate Random</button>
             <img src={movieData["Poster"]} alt="Hero Image" />
@@ -168,7 +171,7 @@ function HeroSection() {
                 <Link className='viewMoreBtn' to={`/details/${movieData["imdbID"]}`}>View More</Link>
                 { LoginCheck() ? (
                 <div>
-                    <button className='watchlist' onClick={() => handleWatchlistClick(movieData["imdbID"])}>Add To Watchlist &#43;</button>
+                    <button className='watchlist' onClick={() => {handleWatchlistClick(movieData["imdbID"]); setShowMessage(true)}}>Add To Watchlist &#43;</button>
                     <button className='likeBtn' onClick={() => handleMovieLikeClick(movieData["imdbID"])}>Like</button>
                     <button className='dislikeBtn' onClick={() => handleMovieDislikeClick(movieData["imdbID"])}>Dislike</button>
                 </div>
