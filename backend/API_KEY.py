@@ -1,2 +1,2 @@
-x_rapidapi_key = "a8666b60f9mshb111f91005f1737p11eba6jsndf5267f9759c"
+x_rapidapi_key = "5801c5f5b9msh2fca84c3a00a1c2p1e936ajsn3fdd6c09630c"
 

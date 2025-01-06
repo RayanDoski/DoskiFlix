@@ -20,6 +20,23 @@
     align-items: center;
 }
 
+.watchlist {
+    flex-grow: 1;
+    padding: 5px 20px;
+    border-radius: 5px;
+    border: 1px solid var(--black-color);
+    background-color: transparent;
+    cursor: pointer;
+    transition: .5s;
+}
+
+
+.watchlist:hover {
+    background-color: var(--black-color);
+    color: var(--white-color);
+    border: 1px solid var(--white-color);
+}
+
 .GenerateMovieTipsBtn {
     background-color: var(--red-color);
     border: var(--white-color) 1px solid;
@@ -293,6 +310,7 @@
 #watchlistDesign .movie-card {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 40px;
     margin: 40px auto;
 }

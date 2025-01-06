@@ -84,6 +84,7 @@
     transition: .5s;
 }
 
+
 .heroSection > div > div > .likeBtn:hover {
     background-color: green;
     color: var(--white-color);

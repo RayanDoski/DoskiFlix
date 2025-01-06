@@ -8,5 +8,10 @@
         "email": "shaho@gmail.com",
         "movie": "tt0110912",
         "like": true
+    },
+    {
+        "email": "shaho@gmail.com",
+        "movie": "tt2015381",
+        "like": true
     }
 ]
