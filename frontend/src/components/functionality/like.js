@@ -16,6 +16,8 @@ const handleMovieLikeClick = async (imdbID) => {
       if (data.m) {
         alert(data.m)
       }
+
+      return true;
   
     } catch (error) {
       console.error('Error adding movie to watchlist:', error);

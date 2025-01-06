@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Link } from 'react-router-dom';
 import './hero.css';
 import Loading from '../Loading/loading.js';
-import LoginCheck from '../LoginCheck/LoginCheck.js';
+import LoginCheck from '../../functionality/LoginCheck.js';
 import Message from '../popupMessage/popupMessage.js';
 
 // functionality
@@ -14,6 +14,9 @@ function HeroSection() {
   const [movieData, setMovieData] = useState({});
   const [showLoading, setShowLoading] = useState(false)
   const [showMessage, setShowMessage] = useState(false);
+  const [showLikeMessage, setShowLikeMessage] = useState(false);
+  const [showDislikeMessage, setShowDislikeMessage] = useState(false);
+  const { isLoggedIn, isLoading } = LoginCheck();
 
   const movies = [
     "The Godfather",
@@ -151,16 +154,46 @@ function HeroSection() {
       if (data.m) {
         alert(data.m)
       }
+
+      setShowMessage(true);
+      // Reset showMessage after 2 seconds to allow it to show again next time
+      setTimeout(() => {
+        setShowMessage(false);
+      }, 2100); // Slightly longer than the Message component's timer
   
     } catch (error) {
       console.error('Error adding movie to watchlist:', error);
     }
   };
 
+  const handleLikeWithMessage = async (imdbID) => {
+    const success = await handleMovieLikeClick(imdbID);
+    if (success) {
+      setShowLikeMessage(true);
+      setTimeout(() => {
+        setShowLikeMessage(false);
+      }, 2100);
+    }
+  };
+
+  const handleDislikeWithMessage = async (imdbID) => {
+    const success = await handleMovieDislikeClick(imdbID);
+    if (success) {
+      setShowDislikeMessage(true);
+      setTimeout(() => {
+        setShowDislikeMessage(false);
+      }, 2100);
+    }
+  };
+
+
+
   return (
     <>
         { showLoading ? <Loading/> : ''}
-        { showMessage ? <Message message='Added'/> : ''}
+        {showMessage && <Message message='Added' />}
+        {showLikeMessage && <Message message='Liked!' />}
+        {showDislikeMessage && <Message message='Disliked!' />}
         <section className='heroSection'>
             <button onClick={generateRandomMovie}>Generate Random</button>
             <img src={movieData["Poster"]} alt="Hero Image" />
@@ -169,11 +202,11 @@ function HeroSection() {
                 <p className='rating'>Rating {movieData["imdbRating"]}/10</p>
                 <p>{movieData["Plot"]}</p>
                 <Link className='viewMoreBtn' to={`/details/${movieData["imdbID"]}`}>View More</Link>
-                { LoginCheck() ? (
+                { isLoggedIn ? (
                 <div>
-                    <button className='watchlist' onClick={() => {handleWatchlistClick(movieData["imdbID"]); setShowMessage(true)}}>Add To Watchlist &#43;</button>
-                    <button className='likeBtn' onClick={() => handleMovieLikeClick(movieData["imdbID"])}>Like</button>
-                    <button className='dislikeBtn' onClick={() => handleMovieDislikeClick(movieData["imdbID"])}>Dislike</button>
+                    <button className='watchlist' onClick={() => handleWatchlistClick(movieData["imdbID"])}>Add To Watchlist &#43;</button>
+                    <button className='likeBtn' onClick={() => handleLikeWithMessage(movieData["imdbID"])}>Like</button>
+                    <button className='dislikeBtn' onClick={() => handleDislikeWithMessage(movieData["imdbID"])}>Dislike</button>
                 </div>
                 ) : (<div></div>)
               }

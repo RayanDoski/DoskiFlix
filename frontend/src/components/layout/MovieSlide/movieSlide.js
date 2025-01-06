@@ -4,7 +4,7 @@ import './movieSlide.css';
 import Loading from '../Loading/loading.js';
 
  
-function MovieCarousel({ Title, movies }) {
+function MovieCarousel({ Title, movies, category }) {
   const [moviesData, setMoviesData] = useState([]);
 
   const generateMovies = () => {
@@ -44,7 +44,7 @@ function MovieCarousel({ Title, movies }) {
     };
   
     return (
-      <div className="movie-carousel">
+      <div className="movie-carousel" id={category}>
         <h2>{Title}</h2>
         <div className="carousel-container">
           <button className="scroll-button left" onClick={scrollLeft}>

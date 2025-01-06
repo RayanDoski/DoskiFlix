@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import '../../assets/styles/profilepage.css';
 import Loading from '../layout/Loading/loading.js';
+import LoginCheck from '../functionality/LoginCheck.js';
+import Message from '../layout/popupMessage/popupMessage.js';
 
 // functionality
 import handleMovieLikeClick from '../functionality/like.js'
@@ -16,8 +18,12 @@ function ProfilePage() {
     const [userInfo, setUserInfo] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [showLoading, setShowLoading] = useState(false)
+    const { isLoggedIn, isLoading } = LoginCheck();
 
-    // 1) Define the function in top-level component scope
+    // for showing like and dislike messages
+    const [showLikeMessage, setShowLikeMessage] = useState(false);
+    const [showDislikeMessage, setShowDislikeMessage] = useState(false);
+
     const fetchWatchlistAndMovies = async () => {
         try {
         const watchlistResponse = await fetch('http://127.0.0.1:8000/api/movie/get/watchlist', {
@@ -107,14 +113,24 @@ function ProfilePage() {
         }
     }
 
-    // 2) Use `useEffect` to call it on mount
     useEffect(() => {
-        fetchWatchlistAndMovies();
-        fetchDislikedMovies();
-        fetchLikedMovies();
-        getUserInfo()
-        setShowLoading(false)
-    }, []);
+      if (isLoading) return;
+      
+      if (!isLoggedIn) {
+          window.location.href = '/';
+          return;
+      }
+
+      const initializeData = async () => {
+          await fetchWatchlistAndMovies();
+          await fetchDislikedMovies();
+          await fetchLikedMovies();
+          await getUserInfo();
+          setShowLoading(false);
+      };
+
+      initializeData();
+  }, [isLoggedIn, isLoading]);
 
 
     const handleWatchlistRemove = async (imdbID) => {
@@ -183,6 +199,26 @@ function ProfilePage() {
         }
     };
 
+    const handleLikeWithMessage = async (imdbID) => {
+      const success = await handleMovieLikeClick(imdbID);
+      if (success) {
+        setShowLikeMessage(true);
+        setTimeout(() => {
+          setShowLikeMessage(false);
+        }, 2100);
+      }
+    };
+  
+    const handleDislikeWithMessage = async (imdbID) => {
+      const success = await handleMovieDislikeClick(imdbID);
+      if (success) {
+        setShowDislikeMessage(true);
+        setTimeout(() => {
+          setShowDislikeMessage(false);
+        }, 2100);
+      }
+    };
+
     // For profile
     const getUserInfo = async () => {
         try {
@@ -200,6 +236,27 @@ function ProfilePage() {
             setUserInfo(data.info)
           }
       
+        } catch (error) {
+          console.error('error', error);
+        }
+    };
+
+    const logoutUser = async () => {
+        try {
+          const response = await fetch('http://127.0.0.1:8000/api/logout', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            window.location.reload();
+          }
+
         } catch (error) {
           console.error('error', error);
         }
@@ -268,6 +325,8 @@ function ProfilePage() {
     return (
         <>
         { showLoading ? <Loading/> : ''}
+        {showLikeMessage && <Message message='Liked!' />}
+        {showDislikeMessage && <Message message='Disliked!' />}
         <div id="wrapper">
             <div id="profileDesign">
                 <div className="profile-card">
@@ -310,6 +369,8 @@ function ProfilePage() {
                         </label>
 
                         <button type="submit">Save</button>
+
+                        <p onClick={() => logoutUser()}>Logout</p>
                     </form>
                 </div>
             </div>
@@ -365,8 +426,8 @@ function ProfilePage() {
                                         <p>Rating: {movie.imdbRating}/10</p>
                                         <p>Year: {movie.Year}</p>
                                         <article>
-                                            <button className='likeBtn' onClick={async () => { await handleMovieLikeClick(movie.imdbID); fetchLikedMovies(); }}>Like</button>
-                                            <button className='dislikeBtn' onClick={async () => { await handleMovieDislikeClick(movie.imdbID); fetchDislikedMovies(); }}>Dislike</button>
+                                            <button className='likeBtn' onClick={async () => { await handleLikeWithMessage(movie.imdbID); fetchLikedMovies(); }}>Like</button>
+                                            <button className='dislikeBtn' onClick={async () => { await handleDislikeWithMessage(movie.imdbID); fetchDislikedMovies(); }}>Dislike</button>
                                         </article>
                                     </div>
                                     <p onClick={() => handleWatchlistRemove(movie.imdbID)}>&#128465;</p>

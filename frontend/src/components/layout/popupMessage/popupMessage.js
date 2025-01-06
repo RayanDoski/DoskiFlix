@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import './popupMessage.css';
 
 function Message({ message }) {
@@ -10,8 +9,9 @@ function Message({ message }) {
       setVisible(false);
     }, 2000);
 
+    // Just clear the timeout, don't set visible back to true here
     return () => clearTimeout(timer);
-  }, []);
+  }, [message]); // Add message as a dependency
   
   if (!visible) return null;
 

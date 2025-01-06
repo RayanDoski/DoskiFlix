@@ -70,10 +70,10 @@ function App() {
   return (
     <>
         <Hero/>
-        {/* <MovieSlider Title="Comedy" movies={comedyMovies} />
-        <MovieSlider Title="Action" movies={actionMovies} />
-        <MovieSlider Title="Drama" movies={dramaMovies} />
-        <MovieSlider Title="SciFi" movies={sciFiMovies} /> */}
+        {/* <MovieSlider Title="Comedy" movies={comedyMovies} category='Comedy' />
+        <MovieSlider Title="Action" movies={actionMovies} category='Action' />
+        <MovieSlider Title="Drama" movies={dramaMovies} category='Drama' />
+        <MovieSlider Title="SciFi" movies={sciFiMovies} category='SciFi' /> */}
     </>
   );
 }

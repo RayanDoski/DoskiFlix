@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './header.css';
 import hamburger from '../../../assets/images/hamburger-menu.png';
-import LoginCheck from '../LoginCheck/LoginCheck.js';
+import LoginCheck from '../../functionality/LoginCheck.js';
 import Login from '../../pages/popupLogin.js'
 
 function Header() {
@@ -10,6 +10,7 @@ function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [userInfo, setUserInfo] = useState([]);
+  const { isLoggedIn, isLoading } = LoginCheck();
 
   const toggleSlideMenu = () => {
     setIsOpen(!isOpen);
@@ -52,15 +53,15 @@ function Header() {
           <div>
             <h1><Link className='logo' to="/">DoskiFlix</Link></h1>
             <ul>
-              <Link className='link' to="/ddd"><li>Home</li></Link>
-              <Link className='link' to="/tv-shows"><li>TV Shows</li></Link>
-              <Link className='link' to="/movies"><li>Movies</li></Link>
-              <Link className='link' to="/latest"><li>Latest</li></Link>
-              <Link className='link' to="/my-list"><li>My List</li></Link>
+              <Link className='link' to="/"><li>Home</li></Link>
+              <Link className='link' to="/#Comedy"><li>Comedy</li></Link>
+              <Link className='link' to="/#Action"><li>Action</li></Link>
+              <Link className='link' to="/#Drama"><li>Drama</li></Link>
+              <Link className='link' to="/#SciFi"><li>SciFi</li></Link>
             </ul>
           </div>
           
-          { LoginCheck() ? (
+          { isLoggedIn ? (
             <div>
               <Link className='profile' to="/profile">
                 <img src={`/profile_img/${userInfo.profileImg}`} alt="Profile-picture" />

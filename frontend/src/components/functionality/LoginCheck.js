@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-function LoginCheck() {
+function useLoginCheck() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -16,18 +17,18 @@ function LoginCheck() {
 
         const data = await response.json();
         setIsLoggedIn(data.success);
-
       } catch (error) {
         console.error('Error checking login status', error);
         setIsLoggedIn(false);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     checkLoginStatus();
   }, []);
 
-  return isLoggedIn
-
+  return { isLoggedIn, isLoading };
 }
 
-export default LoginCheck;
+export default useLoginCheck;

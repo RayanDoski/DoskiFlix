@@ -174,3 +174,8 @@ def update_user_profile_img():
         return jsonify({"success": True, "message": "Profile image updated"}), 200
         
     return jsonify({"success": False, "message": "Invalid file type"}), 400
+
+@loginSystem.route('/api/logout', methods=['GET', 'POST'])
+def logout():
+    session.pop('LoggedIn', None)
+    return jsonify({'success': True, 'message': 'Logged out'}), 200
