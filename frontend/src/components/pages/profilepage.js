@@ -220,6 +220,27 @@ function ProfilePage() {
       }
     };
 
+    const handleWatchlistClick = async (imdbID) => {
+        try {
+          const response = await fetch('http://127.0.0.1:8000/api/movie/watchlist/add', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ imdbID }), // pass imdbID in the request body
+          });
+
+          const data = await response.json();
+
+          if (data.m) {
+            alert(data.m)
+          }
+          } catch (error) {
+            console.error('Error adding movie to watchlist:', error);
+        }
+    }
+
     // For profile
     const getUserInfo = async () => {
         try {
@@ -364,6 +385,7 @@ function ProfilePage() {
           const movies = await Promise.all(moviePromises);
           // Filter out any error responses
           setMovieTips(movies.filter(movie => !movie.Error));
+          console.log(movies);
       } catch (error) {
           console.error('Error fetching movies:', error);
       } finally {
@@ -500,7 +522,9 @@ function ProfilePage() {
                             <p>Year: {movie.Year}</p>
                             <p>Director: {movie.Director}</p>
                             <p>Plot: {movie.Plot}</p>
+                            <button className='watchlist' onClick={async () => { await handleWatchlistClick(movie.imdbID); fetchWatchlistAndMovies()}}>Add To Watchlist &#43;</button>
                         </div>
+
                     </div>
                 ))}
             </div>
