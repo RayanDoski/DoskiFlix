@@ -8,7 +8,27 @@
     background-color: #f5f5f5;
     max-width: 1400px;
     border-radius: 15px;
-    margin: 50px auto 50px auto;
+    margin: 0px auto 50px auto;
+}
+
+/* button design */
+
+.GenerateMovieTipsBtnDiv {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.GenerateMovieTipsBtn {
+    background-color: var(--red-color);
+    border: var(--white-color) 1px solid;
+    color: var(--white-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: 0.5s ease-in-out;
+    cursor: pointer;
+    margin: 25px auto 25px auto;
 }
 
 /* Profile section */
@@ -269,6 +289,66 @@
     transform: translateY(1px); /* Slight press-down effect */
   }
   
+  /* Movie Tips Styling */
+#watchlistDesign .movie-card {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin: 40px auto;
+}
+
+#watchlistDesign .movie-card img {
+    max-width: 100px;
+    height: auto;
+}
+
+#watchlistDesign .movie-card > div {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 350px;
+}
+
+#watchlistDesign .movie-card h2 {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+}
+
+#watchlistDesign .movie-card p {
+    margin: 0 0 5px 0;
+    font-size: 12px;
+}
+
+/* Button styling to match other buttons */
+.GenerateMovieTipsBtn {
+    background-color: var(--red-color);
+    border: var(--white-color) 1px solid;
+    color: var(--white-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: 0.5s ease-in-out;
+    cursor: pointer;
+    margin: 25px auto;
+    display: block;
+}
+
+.GenerateMovieTipsBtn:hover {
+    padding: 12px 24px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #watchlistDesign .movie-card {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    #watchlistDesign .movie-card > div {
+        width: 100%;
+        text-align: center;
+    }
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -284,4 +364,15 @@
     #stackedColumns {
         width: 100%;
     }
+
+    #watchlistDesign .movie-card {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    #watchlistDesign .movie-card > div {
+        width: 100%;
+        text-align: center;
+    }
 }
+

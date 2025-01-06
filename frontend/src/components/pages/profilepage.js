@@ -15,6 +15,7 @@ function ProfilePage() {
     const [movies, setMovies] = useState([]);
     const [likedMovies, setLikedMovies] = useState([]);
     const [dislikedMovies, setDislikedMovies] = useState([]);
+    const [movieTips, setMovieTips] = useState([]);
     const [userInfo, setUserInfo] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [showLoading, setShowLoading] = useState(false)
@@ -322,6 +323,54 @@ function ProfilePage() {
         }
     };
 
+    // Update the generateMovieTips function:
+    const generateMovieTips = async () => {
+      setShowLoading(true);
+      try {
+          const response = await fetch('http://127.0.0.1:8000/api/generate/movie/ideas', {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ likedMovies, dislikedMovies }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+              // Parse the nested result string into an object
+              const parsedTips = JSON.parse(data.movieTips.result);
+              // Now get the recommendations array
+              getMovieTipsInfo(parsedTips.recommendations);
+          } else {
+              console.log(data.error);
+              setShowLoading(false);
+          }
+      } catch (error) {
+          console.error('Error:', error);
+          setShowLoading(false);
+      }
+    };
+
+    // Update the getMovieTipsInfo function:
+    const getMovieTipsInfo = async (recommendations) => {
+      try {
+          const moviePromises = recommendations.map(movieTitle => 
+              fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(movieTitle)}&apikey=72ced4bc`)
+                  .then(response => response.json())
+          );
+          
+          const movies = await Promise.all(moviePromises);
+          // Filter out any error responses
+          setMovieTips(movies.filter(movie => !movie.Error));
+      } catch (error) {
+          console.error('Error fetching movies:', error);
+      } finally {
+          setShowLoading(false);
+      }
+    };
+
     return (
         <>
         { showLoading ? <Loading/> : ''}
@@ -436,23 +485,26 @@ function ProfilePage() {
                         ))}
                     </ul>
                 </div>
+
                 <div className="column" id="watchlistDesign">
-                    <button type="submit" className="generate" onClick={async () => {}}>Generate movie tips</button>
-                        <ul>
-                            {movies.map((movie, index) => (
-                                <li key={index}>
-                                    <img src={movie.Poster} alt={`${movie.Title} Poster`} style={{ width: '100px' }}/>
-                                    <aside>
-                                        <div>
-                                            <h4>{movie.Title}</h4>
-                                            <p>Rating: {movie.imdbRating}/10</p>
-                                            <p>Year: {movie.Year}</p>
-                                        </div>
-                                    </aside>
-                                </li>
-                            ))}
-                        </ul>
-                </div>
+                <button className='GenerateMovieTipsBtn' onClick={() => generateMovieTips()}>
+                    Generate Movie Tips
+                </button>
+                {movieTips.map((movie, index) => (
+                    <div key={index} className="movie-card">
+                        {movie.Poster && movie.Poster !== 'N/A' && (
+                            <img src={movie.Poster} alt={movie.Title} />
+                        )}
+                        <div>
+                            <h2>{movie.Title}</h2>
+                            <p>Year: {movie.Year}</p>
+                            <p>Director: {movie.Director}</p>
+                            <p>Plot: {movie.Plot}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
             </div>
         </div>
         </>
