@@ -13,7 +13,7 @@ def allowed_file(filename):
 # Create the blueprint
 loginSystem = Blueprint('loginSystem', __name__)
 
-@loginSystem.route('/api/isloggedin', methods=['GET', 'POST'])
+@loginSystem.route('/api/isloggedin', methods=['POST'])
 def isLoggedIn():
     if 'LoggedIn' in session:
         return jsonify({'success': True})
@@ -53,7 +53,7 @@ def login():
             # If no user found with that email
             return jsonify({'success': False, 'message': 'Invalid email or password'}), 401
 
-@loginSystem.route('/api/register', methods=['GET', 'POST'])
+@loginSystem.route('/api/register', methods=['POST'])
 def register():
     try:
         data = request.get_json()
@@ -103,7 +103,7 @@ def register():
         # In case of any unexpected error, return a 500 response
         return jsonify({'success': False}), 500
     
-@loginSystem.route('/api/get/user/info', methods=['GET', 'POST'])
+@loginSystem.route('/api/get/user/info', methods=['POST'])
 def get_user_info():
     # 1. Check if we have a user email in the session
     session_user_email = session['LoggedIn']
@@ -122,7 +122,7 @@ def get_user_info():
     # 4. Return the user info in JSON format
     return jsonify({'success': True, 'info': matching_user}), 200
 
-@loginSystem.route('/api/update/user/info', methods=['GET', 'POST'])
+@loginSystem.route('/api/update/user/info', methods=['POST'])
 def update_user_info():
     data = request.get_json()
     firstname = data.get('firstname')
@@ -143,7 +143,7 @@ def update_user_info():
     
     return jsonify({"success": True, "message": "User info updated"}), 200
 
-@loginSystem.route('/api/update/user/profile/img', methods=['GET', 'POST'])
+@loginSystem.route('/api/update/user/profile/img', methods=['POST'])
 def update_user_profile_img():
     if 'file' not in request.files:
         return jsonify({"success": False, "message": "No file provided"}), 400
@@ -175,7 +175,7 @@ def update_user_profile_img():
         
     return jsonify({"success": False, "message": "Invalid file type"}), 400
 
-@loginSystem.route('/api/logout', methods=['GET', 'POST'])
+@loginSystem.route('/api/logout', methods=['POST'])
 def logout():
     session.pop('LoggedIn', None)
     return jsonify({'success': True, 'message': 'Logged out'}), 200

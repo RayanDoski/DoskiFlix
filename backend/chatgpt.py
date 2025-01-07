@@ -34,6 +34,9 @@ def chatgpt():
 
         response = requests.post(url, json=payload, headers=headers)
 
+        #ba kolla läget
+        print(response.json())
+
         return jsonify({'success': True, 'movieTips': response.json()}), 200
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
