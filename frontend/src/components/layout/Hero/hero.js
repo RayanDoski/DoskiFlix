@@ -201,7 +201,6 @@ function HeroSection() {
                 <h2>{movieData["Title"]}</h2>
                 <p className='rating'>Rating {movieData["imdbRating"]}/10</p>
                 <p>{movieData["Plot"]}</p>
-                <Link className='viewMoreBtn' to={`/details/${movieData["imdbID"]}`}>View More</Link>
                 { isLoggedIn ? (
                 <div>
                     <button className='watchlist' onClick={() => handleWatchlistClick(movieData["imdbID"])}>Add To Watchlist &#43;</button>

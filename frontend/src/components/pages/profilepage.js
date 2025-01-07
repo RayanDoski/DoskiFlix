@@ -360,6 +360,7 @@ function ProfilePage() {
           const data = await response.json();
 
           if (data.success) {
+              console.log(data.movieTips.result);
               // Parse the nested result string into an object
               const parsedTips = JSON.parse(data.movieTips.result);
               // Now get the recommendations array

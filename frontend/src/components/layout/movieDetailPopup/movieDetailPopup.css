@@ -1,0 +1,120 @@
+.viewMoviePopupBackground {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 3;
+    background-color: rgba(0, 0, 0, 0.665);
+    display: flex;
+    justify-content: center;
+}
+
+.viewMoviePopup {
+    z-index: 4;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 900px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: var(--white-color);
+}
+
+.viewMoviePopup > button {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translate(-50%);
+    padding: 10px 20px;
+    border-radius: 15px;
+    background-color: var(--black-color);
+    color: var(--white-color);
+    cursor: pointer;
+    transition: .5s;
+}
+
+.viewMoviePopup > button:hover {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.viewMoviePopup > img {
+    border-radius: 5px;
+}
+
+.viewMoviePopup > div {
+    display: block;
+}
+
+.viewMoviePopup > div > h2 {
+    font-size: 32px;
+    margin: 0;
+}
+
+.viewMoviePopup > div > .rating {
+    margin: 0;
+    font-size: 12px;
+}
+
+.viewMoviePopup > div > .viewMoreBtn {
+    border: 1px solid var(--black-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--black-color);
+    margin: 20px 0px;
+    transition: .5s;
+}
+
+.viewMoviePopup > div > .viewMoreBtn:hover {
+    background-color: var(--black-color);
+    color: var(--white-color);
+    border: 1px solid var(--white-color);
+}
+
+.viewMoviePopup > div > div {
+    position: absolute;
+    top: 85%;
+    right: 5%;
+    transform: translate(5%, 85%);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.viewMoviePopup > div > div > .watchlist,
+.viewMoviePopup > div > div > .likeBtn,
+.viewMoviePopup > div > div > .dislikeBtn {
+    flex-grow: 1;
+    padding: 5px 20px;
+    border-radius: 5px;
+    border: 1px solid var(--black-color);
+    background-color: transparent;
+    cursor: pointer;
+    transition: .5s;
+}
+
+
+.viewMoviePopup > div > div > .likeBtn:hover {
+    background-color: green;
+    color: var(--white-color);
+    border: 1px solid var(--white-color);
+}
+
+.viewMoviePopup > div > div > .dislikeBtn:hover {
+    background-color: var(--red-color);
+    color: var(--white-color);
+    border: 1px solid var(--white-color);
+}
+
+.viewMoviePopup > div > div > .watchlist:hover {
+    background-color: var(--black-color);
+    color: var(--white-color);
+    border: 1px solid var(--white-color);
+}

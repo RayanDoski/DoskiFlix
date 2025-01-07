@@ -20,7 +20,7 @@ def chatgpt():
                 {
                     "role": "user", #the status of the user
 
-                    "content": f"You are a movie recomendation AI, give me a list of five movies to watch. Give only the movie titles as recomendations, you response should be in JSON format and nothing else whatsoever, here are the movies that the specific user has liked and diskliked, please tailor the recomendations based on there prefrences. List of liked and disliked movies: {data}" 
+                    "content": f"""You are a movie recomendation AI, give me a list of five movies to watch, be volatile with the movies that you choose. Give only the movie titles as recomendations nothing more make at all no text no more information other than the titles, you are not to give any text other than the titles nor whitespace, you response should be in JSON format and nothing else whatsoever make it look only like this , here are the movies that the specific user has liked and diskliked, please tailor the recomendations based on there prefrences. List of liked and disliked movies: {data}""" 
                 }
             ],
             "web_access": False

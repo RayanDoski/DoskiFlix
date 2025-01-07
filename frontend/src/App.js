@@ -6,6 +6,7 @@ import Header from './components/layout/Header/header.js';
 import Footer from './components/layout/Footer/footer.js';
 import Homepage from './components/pages/homepage.js'
 import Profilepage from './components/pages/profilepage.js'
+import MovieDetailPopup from './components/layout/movieDetailPopup/movieDetailPopup.js'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/profile" element={<Profilepage />} />
+          <Route path="/viewPopupTest" element={<MovieDetailPopup />} />
           <Route path="/ddd" element={<div>Home Page Content</div>} />
           <Route path="/tv-shows" element={<div>TV Shows Content</div>} />
           <Route path="/movies" element={<div>Movies Content</div>} />
