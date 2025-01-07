@@ -4,6 +4,7 @@ import '../../assets/styles/profilepage.css';
 import Loading from '../layout/Loading/loading.js';
 import LoginCheck from '../functionality/LoginCheck.js';
 import Message from '../layout/popupMessage/popupMessage.js';
+import getAPIKey from '../functionality/apikey.js';
 
 // functionality
 import handleMovieLikeClick from '../functionality/like.js'
@@ -38,7 +39,7 @@ function ProfilePage() {
 
         const movieDetailsPromises = watchlistData.map(async (item) => {
             const omdbResp = await fetch(
-            `https://www.omdbapi.com/?i=${item.movie}&apikey=72ced4bc`
+            `https://www.omdbapi.com/?i=${item.movie}&apikey=${getAPIKey()}`
             );
             const omdbData = await omdbResp.json();
             return {
@@ -67,7 +68,7 @@ function ProfilePage() {
 
         const movieDetailsPromises = LikedMoviesData.map(async (item) => {
             const omdbResp = await fetch(
-            `https://www.omdbapi.com/?i=${item.movie}&apikey=72ced4bc`
+            `https://www.omdbapi.com/?i=${item.movie}&apikey=${getAPIKey()}`
             );
             const omdbData = await omdbResp.json();
             return {
@@ -97,7 +98,7 @@ function ProfilePage() {
 
         const movieDetailsPromises = DislikedMoviesData.map(async (item) => {
             const omdbResp = await fetch(
-            `https://www.omdbapi.com/?i=${item.movie}&apikey=72ced4bc`
+            `https://www.omdbapi.com/?i=${item.movie}&apikey=${getAPIKey()}`
             );
             const omdbData = await omdbResp.json();
             return {
@@ -379,7 +380,7 @@ function ProfilePage() {
     const getMovieTipsInfo = async (recommendations) => {
       try {
           const moviePromises = recommendations.map(movieTitle => 
-              fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(movieTitle)}&apikey=72ced4bc`)
+              fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(movieTitle)}&apikey=${getAPIKey()}`)
                   .then(response => response.json())
           );
           

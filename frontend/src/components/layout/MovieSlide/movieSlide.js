@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './movieSlide.css';
 import Loading from '../Loading/loading.js';
 import MovieDetailPopup from '../movieDetailPopup/movieDetailPopup.js';
+import getAPIKey from '../../functionality/apikey.js';
 
  
 function MovieCarousel({ Title, movies, category }) {
@@ -17,7 +18,7 @@ function MovieCarousel({ Title, movies, category }) {
 
     Promise.all(
       selectedMovies.map((title) =>
-        fetch(`https://www.omdbapi.com/?t=${title}&apikey=72ced4bc`)
+        fetch(`https://www.omdbapi.com/?t=${title}&apikey=${getAPIKey()}`)
       )
     )
       .then((responses) => Promise.all(responses.map((response) => response.json())))

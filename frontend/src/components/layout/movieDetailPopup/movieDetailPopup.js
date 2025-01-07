@@ -4,6 +4,7 @@ import './movieDetailPopup.css';
 import Loading from '../Loading/loading.js';
 import LoginCheck from '../../functionality/LoginCheck.js';
 import Message from '../popupMessage/popupMessage.js';
+import getAPIKey from '../../functionality/apikey.js';
 
 // functionality
 import handleMovieLikeClick from '../../functionality/like.js'
@@ -19,7 +20,7 @@ function MovieDetailPopup({ data, onClose }) {
   const { isLoggedIn, isLoading } = LoginCheck();
 
   const generateRandomMovie = () => {
-    fetch(`https://www.omdbapi.com/?t=${data}&apikey=72ced4bc`)
+    fetch(`https://www.omdbapi.com/?t=${data}&apikey=${getAPIKey()}`)
       .then(response => response.json())
       .then(data => {
         setMovieData(data);

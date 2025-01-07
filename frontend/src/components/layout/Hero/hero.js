@@ -4,6 +4,7 @@ import './hero.css';
 import Loading from '../Loading/loading.js';
 import LoginCheck from '../../functionality/LoginCheck.js';
 import Message from '../popupMessage/popupMessage.js';
+import getAPIKey from '../../functionality/apikey.js';
 
 // functionality
 import handleMovieLikeClick from '../../functionality/like.js'
@@ -124,7 +125,7 @@ function HeroSection() {
   const generateRandomMovie = () => {
     setShowLoading(true)
     const randomTitle = movies[Math.floor(Math.random() * movies.length)];
-    fetch(`https://www.omdbapi.com/?t=${randomTitle}&apikey=72ced4bc`)
+    fetch(`https://www.omdbapi.com/?t=${randomTitle}&apikey=${getAPIKey()}`)
       .then(response => response.json())
       .then(data => {
         setMovieData(data);
