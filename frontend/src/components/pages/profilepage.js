@@ -327,7 +327,7 @@ function ProfilePage() {
           if (data.success) {
               setMovieTips(data.movieTips);
           } else {
-              console.log(data.error);
+              console.log(data.error, 'dawdawdawdawaw');
           }
       } catch (error) {
           console.error('Error:', error);
