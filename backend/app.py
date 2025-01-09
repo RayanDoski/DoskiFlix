@@ -2,10 +2,10 @@ from flask import Flask, send_from_directory, Blueprint
 from flask_cors import CORS
 import os 
 
-from views import views
 from loginSystem import loginSystem
 from movie import movie
 from chatgpt import Chatgpt
+from omdb import omdb
 
 app = Flask(__name__, static_folder='../frontend/build')
 app.secret_key = 'DoskiFlix12345'
@@ -18,10 +18,10 @@ CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000", "supports_c
      methods=["GET", "POST", "OPTIONS"])
 
 # Register blueprint
-app.register_blueprint(views)
 app.register_blueprint(loginSystem)
 app.register_blueprint(movie)
 app.register_blueprint(Chatgpt)
+app.register_blueprint(omdb)
 
 # Serve React App
 @app.route('/', defaults={'path': ''})

@@ -1,2 +1,2 @@
 x_rapidapi_key = "5801c5f5b9msh2fca84c3a00a1c2p1e936ajsn3fdd6c09630c"
-
+omdb_api_key = '72ced4bc'

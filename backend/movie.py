@@ -1,5 +1,7 @@
 from flask import Blueprint, jsonify, request, session 
-import json, os, hashlib
+import requests
+import json, os
+from API_KEY import omdb_api_key
 
 # Create the blueprint
 movie = Blueprint('movie', __name__)
@@ -39,14 +41,26 @@ def watchlistAdd():
 
 @movie.route('/api/movie/get/watchlist', methods=['GET', 'POST'])
 def get_watchlist():
-    # Load watchlist data from JSON (or DB) on the server
-    with open('watchlist.json', 'r') as f:
-        watchlist_data = json.load(f)  # This is a list of objects
+    try:
+        # Load watchlist data from JSON
+        with open('watchlist.json', 'r') as f:
+            watchlist_data = json.load(f)
 
-    # Filter to match the requested email
-    user_watchlist = [item for item in watchlist_data if item['email'].lower() == session['LoggedIn'].lower()]
+        # Filter to match the requested email
+        user_watchlist = [item for item in watchlist_data if item['email'].lower() == session['LoggedIn'].lower()]
 
-    return jsonify(user_watchlist)
+        # Fetch OMDB data for each movie in the watchlist
+        movies_with_details = []
+        for item in user_watchlist:
+            url = f'https://www.omdbapi.com/?i={item["movie"]}&apikey={omdb_api_key}'
+            response = requests.get(url)
+            movie_data = response.json()
+            movies_with_details.append(movie_data)
+
+        return jsonify(movies_with_details)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @movie.route('/api/movie/get/watchlist/remove', methods=['GET', 'POST'])
 def watchlistRemove():
@@ -121,24 +135,37 @@ def movie_like_add():
 
 @movie.route('/api/movie/get/likes', methods=['GET', 'POST'])
 def get_likes():
-    # Path to your like/dislike JSON file
-    json_file = 'likeAndDislike.json'
+    try:
+        json_file = 'likeAndDislike.json'
 
-    # If the file does not exist or is empty, safely return an empty list
-    if not os.path.exists(json_file):
-        return jsonify([])
+        # Return empty list if file doesn't exist
+        if not os.path.exists(json_file):
+            return jsonify([])
 
-    with open(json_file, 'r') as f:
-        all_likes_data = json.load(f)  # This is a list of objects
+        with open(json_file, 'r') as f:
+            all_likes_data = json.load(f)
 
-    # Filter for this user's liked movies
-    user_likes = [
-        item for item in all_likes_data
-        if item['email'].lower() == session['LoggedIn'].lower() 
-           and item.get('like') is True
-    ]
+        # Filter for user's liked movies
+        user_likes = [
+            item for item in all_likes_data
+            if item['email'].lower() == session['LoggedIn'].lower() 
+            and item.get('like') is True
+        ]
 
-    return jsonify(user_likes)
+        # Fetch OMDB data for each liked movie
+        movies_with_details = []
+        for item in user_likes:
+            url = f'https://www.omdbapi.com/?i={item["movie"]}&apikey={omdb_api_key}'
+            response = requests.get(url)
+            movie_data = response.json()
+            # Add the like status to the movie data
+            movie_data['like'] = item['like']
+            movies_with_details.append(movie_data)
+
+        return jsonify(movies_with_details)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @movie.route('/api/movie/get/likes/remove', methods=['GET', 'POST'])
 def likes_remove():
@@ -213,24 +240,35 @@ def movie_dislike_add():
 
 @movie.route('/api/movie/get/dislikes', methods=['GET', 'POST'])
 def get_dislikes():
-    # Path to your like/dislike JSON file
-    json_file = 'likeAndDislike.json'
+    try:
+        json_file = 'likeAndDislike.json'
 
-    # If the file does not exist or is empty, safely return an empty list
-    if not os.path.exists(json_file):
-        return jsonify([])
+        # Return empty list if file doesn't exist
+        if not os.path.exists(json_file):
+            return jsonify([])
 
-    with open(json_file, 'r') as f:
-        all_likes_data = json.load(f)  # This is a list of objects
+        with open(json_file, 'r') as f:
+            all_likes_data = json.load(f)
 
-    # Filter for this user's liked movies
-    user_likes = [
-        item for item in all_likes_data
-        if item['email'].lower() == session['LoggedIn'].lower() 
-           and item.get('like') is False
-    ]
+        # Filter for user's disliked movies
+        user_dislikes = [
+            item for item in all_likes_data
+            if item['email'].lower() == session['LoggedIn'].lower() 
+            and item.get('like') is False
+        ]
 
-    return jsonify(user_likes)
+        # Fetch OMDB data for each disliked movie
+        movies_with_details = []
+        for item in user_dislikes:
+            url = f'https://www.omdbapi.com/?i={item["movie"]}&apikey={omdb_api_key}'
+            response = requests.get(url)
+            movie_data = response.json()
+            movies_with_details.append(movie_data)
+
+        return jsonify(movies_with_details)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @movie.route('/api/movie/get/dislikes/remove', methods=['GET', 'POST'])
 def dislikes_remove():

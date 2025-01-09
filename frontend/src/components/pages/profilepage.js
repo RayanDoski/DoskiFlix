@@ -27,93 +27,58 @@ function ProfilePage() {
     const [showDislikeMessage, setShowDislikeMessage] = useState(false);
 
     const fetchWatchlistAndMovies = async () => {
-        try {
-        const watchlistResponse = await fetch('http://127.0.0.1:8000/api/movie/get/watchlist', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-        });
-        const watchlistData = await watchlistResponse.json();
-
-        const movieDetailsPromises = watchlistData.map(async (item) => {
-            const omdbResp = await fetch(
-            `https://www.omdbapi.com/?i=${item.movie}&apikey=${getAPIKey()}`
-            );
-            const omdbData = await omdbResp.json();
-            return {
-            ...omdbData,
-            };
-        });
-
-        const fullMovieDetails = await Promise.all(movieDetailsPromises);
-        setMovies(fullMovieDetails);
-
-        } catch (error) {
-        console.error('Error:', error);
-        }
+      try {
+          const response = await fetch('http://127.0.0.1:8000/api/movie/get/watchlist', {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+          });
+          
+          const movieData = await response.json();
+          setMovies(movieData);
+  
+      } catch (error) {
+          console.error('Error:', error);
+      }
     };
 
     const fetchLikedMovies = async () => {
-        try {
-        const LikedMoviesResponse = await fetch('http://127.0.0.1:8000/api/movie/get/likes', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-        });
-        const LikedMoviesData = await LikedMoviesResponse.json();
-
-        const movieDetailsPromises = LikedMoviesData.map(async (item) => {
-            const omdbResp = await fetch(
-            `https://www.omdbapi.com/?i=${item.movie}&apikey=${getAPIKey()}`
-            );
-            const omdbData = await omdbResp.json();
-            return {
-            ...omdbData,
-            like: item.like
-            };
-        });
-
-        const fullMovieDetails = await Promise.all(movieDetailsPromises);
-        setLikedMovies(fullMovieDetails);
-
-        } catch (error) {
-        console.error('Error:', error);
-        }
+      try {
+          const response = await fetch('http://127.0.0.1:8000/api/movie/get/likes', {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+          });
+          
+          const movieData = await response.json();
+          setLikedMovies(movieData);
+  
+      } catch (error) {
+          console.error('Error:', error);
+      }
     };
 
     const fetchDislikedMovies = async () => {
-        try {
-        const DislikedMoviesResponse = await fetch('http://127.0.0.1:8000/api/movie/get/dislikes', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-        });
-        const DislikedMoviesData = await DislikedMoviesResponse.json();
-
-        const movieDetailsPromises = DislikedMoviesData.map(async (item) => {
-            const omdbResp = await fetch(
-            `https://www.omdbapi.com/?i=${item.movie}&apikey=${getAPIKey()}`
-            );
-            const omdbData = await omdbResp.json();
-            return {
-            ...omdbData,
-            // like: !item.like
-            };
-        });
-
-        const fullMovieDetails = await Promise.all(movieDetailsPromises);
-        setDislikedMovies(fullMovieDetails);
-
-        } catch (error) {
-        console.error('Error:', error);
-        }
-    }
+      try {
+          const response = await fetch('http://127.0.0.1:8000/api/movie/get/dislikes', {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+          });
+          
+          const movieData = await response.json();
+          setDislikedMovies(movieData);
+  
+      } catch (error) {
+          console.error('Error:', error);
+      }
+    };
 
     useEffect(() => {
       if (isLoading) return;
@@ -345,7 +310,6 @@ function ProfilePage() {
         }
     };
 
-    // Update the generateMovieTips function:
     const generateMovieTips = async () => {
       setShowLoading(true);
       try {
@@ -357,39 +321,16 @@ function ProfilePage() {
               },
               body: JSON.stringify({ likedMovies, dislikedMovies }),
           });
-
+  
           const data = await response.json();
-
+  
           if (data.success) {
-              console.log(data.movieTips.result);
-              // Parse the nested result string into an object
-              const parsedTips = JSON.parse(data.movieTips.result);
-              // Now get the recommendations array
-              getMovieTipsInfo(parsedTips.recommendations);
+              setMovieTips(data.movieTips);
           } else {
               console.log(data.error);
-              setShowLoading(false);
           }
       } catch (error) {
           console.error('Error:', error);
-          setShowLoading(false);
-      }
-    };
-
-    // Update the getMovieTipsInfo function:
-    const getMovieTipsInfo = async (recommendations) => {
-      try {
-          const moviePromises = recommendations.map(movieTitle => 
-              fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(movieTitle)}&apikey=${getAPIKey()}`)
-                  .then(response => response.json())
-          );
-          
-          const movies = await Promise.all(moviePromises);
-          // Filter out any error responses
-          setMovieTips(movies.filter(movie => !movie.Error));
-          console.log(movies);
-      } catch (error) {
-          console.error('Error fetching movies:', error);
       } finally {
           setShowLoading(false);
       }

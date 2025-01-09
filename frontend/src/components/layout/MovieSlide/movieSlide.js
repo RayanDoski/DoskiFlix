@@ -10,21 +10,28 @@ function MovieCarousel({ Title, movies, category }) {
   const [moviesData, setMoviesData] = useState([]);
   const [showMovieDetails, setShowMovieDetails] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const generateMovies = () => {
-    // Shuffle the movies array and select the first 13 unique titles
-    const shuffledMovies = [...movies].sort(() => 0.5 - Math.random());
-    const selectedMovies = shuffledMovies.slice(0, 13);
-
-    Promise.all(
-      selectedMovies.map((title) =>
-        fetch(`https://www.omdbapi.com/?t=${title}&apikey=${getAPIKey()}`)
-      )
-    )
-      .then((responses) => Promise.all(responses.map((response) => response.json())))
-      .then((dataArray) => {
-        setMoviesData(dataArray);
-      });
+  const generateMovies = async () => {
+    try {
+        setLoading(true);
+        const response = await fetch('http://127.0.0.1:8000/api/omdb_batch', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ movies }),
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            setMoviesData(result.data);
+            setLoading(false);
+        }
+    } catch (error) {
+        console.error('Error fetching movies:', error);
+    }
   };
 
     useEffect(() => {
@@ -59,6 +66,7 @@ function MovieCarousel({ Title, movies, category }) {
   
     return (
       <>
+      {loading && <Loading />}
       {showMovieDetails && selectedMovie && (
         <MovieDetailPopup 
           data={selectedMovie} 
