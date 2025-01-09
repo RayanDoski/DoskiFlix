@@ -109,6 +109,23 @@ movies = [
     "Knives Out"
 ]
 
+@omdb.route('/api/omdb_movie', methods=['POST'])
+def get_movie():
+    try:
+
+        data = request.get_json()
+        title = data.get('data')
+
+        # Make API request to OMDB
+        url = f'https://www.omdbapi.com/?t={title}&apikey={omdb_api_key}'
+        response = requests.get(url)
+        movie_data = response.json()
+        
+        return jsonify({'success': True, 'data': movie_data})
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @omdb.route('/api/omdb_info', methods=['POST'])
 def generate_random_movie():
     try:

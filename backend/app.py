@@ -15,7 +15,7 @@ app.config['SESSION_COOKIE_SECURE'] = True
 # Update CORS to allow specific origins and support credentials
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000", "supports_credentials": True}},
      allow_headers=["Content-Type", "Authorization"],
-     methods=["GET", "POST", "OPTIONS"])
+     methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"])
 
 # Register blueprint
 app.register_blueprint(loginSystem)

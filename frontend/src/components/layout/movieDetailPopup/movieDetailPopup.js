@@ -19,22 +19,35 @@ function MovieDetailPopup({ data, onClose }) {
   const [showDislikeMessage, setShowDislikeMessage] = useState(false);
   const { isLoggedIn, isLoading } = LoginCheck();
 
-  const generateRandomMovie = () => {
-    fetch(`https://www.omdbapi.com/?t=${data}&apikey=${getAPIKey()}`)
-      .then(response => response.json())
-      .then(data => {
-        setMovieData(data);
-    });
+  const generateMovie = async () => {
+    try {
+        const response = await fetch('http://127.0.0.1:8000/api/omdb_movie', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ data }),
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          setMovieData(result.data)
+        }
+    } catch (error) {
+        console.error('Error fetching movies:', error);
+    }
   };
 
 
-    useEffect(() => {
-        generateRandomMovie()
-    });
+  useEffect(() => {
+    generateMovie()
+  });
 
   const handleWatchlistClick = async (imdbID) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/movie/watchlist/add', {
+      const response = await fetch('http://127.0.0.1:8000/api/watchlist', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -42,25 +55,16 @@ function MovieDetailPopup({ data, onClose }) {
         },
         body: JSON.stringify({ imdbID }), // pass imdbID in the request body
       });
-      
+
       const data = await response.json();
-  
-      // handle response data here if needed
 
       if (data.m) {
         alert(data.m)
       }
-
-      setShowMessage(true);
-      // Reset showMessage after 2 seconds to allow it to show again next time
-      setTimeout(() => {
-        setShowMessage(false);
-      }, 2100); // Slightly longer than the Message component's timer
-  
-    } catch (error) {
-      console.error('Error adding movie to watchlist:', error);
+      } catch (error) {
+        console.error('Error adding movie to watchlist:', error);
     }
-  };
+  }
 
   const handleLikeWithMessage = async (imdbID) => {
     const success = await handleMovieLikeClick(imdbID);

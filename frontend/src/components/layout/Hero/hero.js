@@ -49,7 +49,7 @@ function HeroSection() {
 
   const handleWatchlistClick = async (imdbID) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/movie/watchlist/add', {
+      const response = await fetch('http://127.0.0.1:8000/api/watchlist', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -57,25 +57,16 @@ function HeroSection() {
         },
         body: JSON.stringify({ imdbID }), // pass imdbID in the request body
       });
-      
+
       const data = await response.json();
-  
-      // handle response data here if needed
 
       if (data.m) {
         alert(data.m)
       }
-
-      setShowMessage(true);
-      // Reset showMessage after 2 seconds to allow it to show again next time
-      setTimeout(() => {
-        setShowMessage(false);
-      }, 2100); // Slightly longer than the Message component's timer
-  
-    } catch (error) {
-      console.error('Error adding movie to watchlist:', error);
+      } catch (error) {
+        console.error('Error adding movie to watchlist:', error);
     }
-  };
+  }
 
   const handleLikeWithMessage = async (imdbID) => {
     const success = await handleMovieLikeClick(imdbID);

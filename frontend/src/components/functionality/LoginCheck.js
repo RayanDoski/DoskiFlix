@@ -7,8 +7,8 @@ function useLoginCheck() {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/isloggedin', {
-          method: 'POST',
+        const response = await fetch('http://127.0.0.1:8000/api/session/status', {
+          method: 'GET',
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
@@ -16,7 +16,7 @@ function useLoginCheck() {
         });
 
         const data = await response.json();
-        setIsLoggedIn(data.success);
+        setIsLoggedIn(data.authenticated);
       } catch (error) {
         console.error('Error checking login status', error);
         setIsLoggedIn(false);

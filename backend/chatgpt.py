@@ -8,7 +8,7 @@ from API_KEY import omdb_api_key
 # Create the blueprint
 Chatgpt = Blueprint('chatgpt', __name__)
 
-@Chatgpt.route('/api/generate/movie/ideas', methods=['POST'])
+@Chatgpt.route('/api/generate_movie_ideas', methods=['POST'])
 def chatgpt():
     try:
         # Get the user's input

@@ -1,6 +1,6 @@
 const handleMovieLikeClick = async (imdbID) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/movie/like/add', {
+      const response = await fetch('http://127.0.0.1:8000/api/likes', {
         method: 'POST',
         credentials: 'include',
         headers: {

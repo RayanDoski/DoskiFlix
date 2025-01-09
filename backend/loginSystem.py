@@ -2,180 +2,142 @@ from flask import Blueprint, jsonify, request, session
 import json, os, hashlib
 from werkzeug.utils import secure_filename
 
-# for the profile picture
-UPLOAD_FOLDER = 'static/profile_images'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-
-# function for the profile picture
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 # Create the blueprint
 loginSystem = Blueprint('loginSystem', __name__)
 
-@loginSystem.route('/api/isloggedin', methods=['POST'])
-def isLoggedIn():
-    if 'LoggedIn' in session:
-        return jsonify({'success': True})
-    else:
-        return jsonify({'success': False})
+# Configuration
+UPLOAD_FOLDER = 'static/profile_images'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-@loginSystem.route('/api/login', methods=['POST'])
-def login():
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@loginSystem.route('/api', methods=['GET'])
+def get_session():
+    return "This is Doskiflix API"
+
+@loginSystem.route('/api/session/status', methods=['GET'])
+def get_session_status():
+    if 'LoggedIn' in session:
+        return jsonify({'authenticated': True}), 200
+    return jsonify({'authenticated': False}), 200
+
+@loginSystem.route('/api/session', methods=['POST'])
+def create_session():
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
 
-    json_file = 'user.json'
-
-    # Read existing users
-    with open(json_file, 'r') as f:
+    with open('user.json', 'r') as f:
         users = json.load(f)
 
-        # Look for a user with the matching email
-        user = None
-        for u in users:
-            if u['email'] == email:
-                user = u
-                break
+    user = next((u for u in users if u['email'] == email), None)
 
-        if user:
-            # Hash the incoming password and compare with stored hash
-            hashed_input_password = hashlib.sha256(password.encode()).hexdigest()
-            if hashed_input_password == user.get('password'):
-                # If passwords match, mark session as logged in
-                session['LoggedIn'] = email
-                return jsonify({'success': True, 'message': 'Login successful'}), 200
-            else:
-                # If password mismatch
-                return jsonify({'success': False, 'message': 'Invalid email or password'}), 401
-        else:
-            # If no user found with that email
-            return jsonify({'success': False, 'message': 'Invalid email or password'}), 401
+    if user and hashlib.sha256(password.encode()).hexdigest() == user.get('password'):
+        session['LoggedIn'] = email
+        return jsonify({'message': 'Login successful'}), 201
+    
+    return jsonify({'error': 'Invalid credentials'}), 401
 
-@loginSystem.route('/api/register', methods=['POST'])
-def register():
+@loginSystem.route('/api/session', methods=['DELETE'])
+def delete_session():
+    session.pop('LoggedIn', None)
+    return '', 204
+
+@loginSystem.route('/api/users', methods=['POST'])
+def create_user():
     try:
         data = request.get_json()
-        firstname = data.get('firstname')
-        lastname = data.get('lastname')
         email = data.get('email')
-        password = data.get('password')
-
-        # JSON file path
+        
         json_file = 'user.json'
-
-        # If the file does not exist, create it and initialize with empty list
         if not os.path.exists(json_file):
             with open(json_file, 'w') as f:
                 json.dump([], f)
 
-        # Read existing users
         with open(json_file, 'r') as f:
             users = json.load(f)
 
-        # Check if the email already exists
-        for user in users:
-            if user['email'] == email:
-                return jsonify({'success': False, 'message': 'Email already exists'}), 409
+        if any(user['email'] == email for user in users):
+            return jsonify({'error': 'Email already exists'}), 409
 
-        # Hash the password
-        hashed_password = hashlib.sha256(password.encode()).hexdigest()
-
-        # Create new user object
         new_user = {
-            "firstname": firstname,
-            "lastname": lastname,
+            "firstname": data.get('firstname'),
+            "lastname": data.get('lastname'),
             "email": email,
-            "password": hashed_password,
+            "password": hashlib.sha256(data.get('password').encode()).hexdigest(),
             "profileImg": 'defaultAvatar.png'
         }
 
-        # Append to list
         users.append(new_user)
 
-        # Write the updated list back to the file
         with open(json_file, 'w') as f:
             json.dump(users, f, indent=4)
 
-        return jsonify({'success': True}), 200
+        return jsonify({'message': 'User created successfully'}), 201
     except Exception as e:
-        # In case of any unexpected error, return a 500 response
-        return jsonify({'success': False}), 500
-    
-@loginSystem.route('/api/get/user/info', methods=['POST'])
-def get_user_info():
-    # 1. Check if we have a user email in the session
-    session_user_email = session['LoggedIn']
-    if not session_user_email:
-        return jsonify({"error": "User email not found in session"}), 401
+        return jsonify({'error': str(e)}), 500
 
-    # 2. Read the user data from user.json
+@loginSystem.route('/api/users/current', methods=['GET'])
+def get_current_user():
+    if 'LoggedIn' not in session:
+        return jsonify({"error": "Unauthorized"}), 401
+
     with open("user.json", "r") as f:
-        users_data = json.load(f)  # Assume this is a list of user objects
+        users_data = json.load(f)
 
-    # 3. Find the user whose email matches
-    matching_user = next((u for u in users_data if u.get("email") == session_user_email), None)
-    if not matching_user:
-        return jsonify({"error": "No user found with that email"}), 404
+    user = next((u for u in users_data if u.get("email") == session['LoggedIn']), None)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
 
-    # 4. Return the user info in JSON format
-    return jsonify({'success': True, 'info': matching_user}), 200
+    return jsonify({'success': True, 'info': user}), 200
 
-@loginSystem.route('/api/update/user/info', methods=['POST'])
-def update_user_info():
+@loginSystem.route('/api/users/current', methods=['PUT'])
+def update_current_user():
     data = request.get_json()
-    firstname = data.get('firstname')
-    lastname = data.get('lastname')
-    email = data.get('email')
 
     with open("user.json", "r") as f:
         users_data = json.load(f)
     
-    for user in users_data:
-        if user['email'] == session['LoggedIn']:
-            user['firstname'] = firstname
-            user['lastname'] = lastname
-            user['email'] = email
+    user = next((u for u in users_data if u['email'] == session['LoggedIn']), None)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    user.update({
+        'firstname': data.get('firstname'),
+        'lastname': data.get('lastname'),
+        'email': data.get('email')
+    })
 
     with open("user.json", "w") as f:
         json.dump(users_data, f, indent=4)
     
-    return jsonify({"success": True, "message": "User info updated"}), 200
+    return jsonify({'success': True}), 204
 
-@loginSystem.route('/api/update/user/profile/img', methods=['POST'])
-def update_user_profile_img():
+@loginSystem.route('/api/users/current/avatar', methods=['PUT'])
+def update_user_avatar():
     if 'file' not in request.files:
-        return jsonify({"success": False, "message": "No file provided"}), 400
+        return jsonify({"error": "No file provided"}), 400
         
     file = request.files['file']
     filename = request.form.get('filename')
     
-    if file and allowed_file(filename):
-        filename = secure_filename(filename)
-        # Change path to React's public folder
-        upload_path = '../frontend/public/profile_img/'  # Adjust this path based on your project structure
-        
-        # Create directory if it doesn't exist
-        os.makedirs(upload_path, exist_ok=True)
-        
-        file.save(os.path.join(upload_path, filename))
-        
-        with open("user.json", "r") as f:
-            users_data = json.load(f)
-        
-        for user in users_data:
-            if user['email'] == session['LoggedIn']:
-                user['profileImg'] = filename
-                
+    if not file or not allowed_file(filename):
+        return jsonify({"error": "Invalid file type"}), 400
+
+    filename = secure_filename(filename)
+    upload_path = '../frontend/public/profile_img/'
+    os.makedirs(upload_path, exist_ok=True)
+    file.save(os.path.join(upload_path, filename))
+    
+    with open("user.json", "r") as f:
+        users_data = json.load(f)
+    
+    user = next((u for u in users_data if u['email'] == session['LoggedIn']), None)
+    if user:
+        user['profileImg'] = filename
         with open("user.json", "w") as f:
             json.dump(users_data, f, indent=4)
+        return '', 204
         
-        return jsonify({"success": True, "message": "Profile image updated"}), 200
-        
-    return jsonify({"success": False, "message": "Invalid file type"}), 400
-
-@loginSystem.route('/api/logout', methods=['POST'])
-def logout():
-    session.pop('LoggedIn', None)
-    return jsonify({'success': True, 'message': 'Logged out'}), 200
+    return jsonify({"error": "User not found"}), 404

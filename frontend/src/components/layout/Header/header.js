@@ -19,8 +19,8 @@ function Header() {
   // For profile
   const getUserInfo = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/get/user/info', {
-        method: 'POST',
+      const response = await fetch('http://127.0.0.1:8000/api/users/current', {
+        method: 'GET',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',

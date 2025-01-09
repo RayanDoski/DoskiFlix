@@ -4,7 +4,6 @@ import '../../assets/styles/profilepage.css';
 import Loading from '../layout/Loading/loading.js';
 import LoginCheck from '../functionality/LoginCheck.js';
 import Message from '../layout/popupMessage/popupMessage.js';
-import getAPIKey from '../functionality/apikey.js';
 
 // functionality
 import handleMovieLikeClick from '../functionality/like.js'
@@ -28,8 +27,8 @@ function ProfilePage() {
 
     const fetchWatchlistAndMovies = async () => {
       try {
-          const response = await fetch('http://127.0.0.1:8000/api/movie/get/watchlist', {
-              method: 'POST',
+          const response = await fetch('http://127.0.0.1:8000/api/watchlist', {
+              method: 'GET',
               credentials: 'include',
               headers: {
                   'Content-Type': 'application/json',
@@ -46,8 +45,8 @@ function ProfilePage() {
 
     const fetchLikedMovies = async () => {
       try {
-          const response = await fetch('http://127.0.0.1:8000/api/movie/get/likes', {
-              method: 'POST',
+          const response = await fetch('http://127.0.0.1:8000/api/likes', {
+              method: 'GET',
               credentials: 'include',
               headers: {
                   'Content-Type': 'application/json',
@@ -64,8 +63,8 @@ function ProfilePage() {
 
     const fetchDislikedMovies = async () => {
       try {
-          const response = await fetch('http://127.0.0.1:8000/api/movie/get/dislikes', {
-              method: 'POST',
+          const response = await fetch('http://127.0.0.1:8000/api/dislikes', {
+              method: 'GET',
               credentials: 'include',
               headers: {
                   'Content-Type': 'application/json',
@@ -102,20 +101,15 @@ function ProfilePage() {
 
     const handleWatchlistRemove = async (imdbID) => {
         try {
-          const response = await fetch('http://127.0.0.1:8000/api/movie/get/watchlist/remove', {
-            method: 'POST',
+          const response = await fetch(`http://127.0.0.1:8000/api/watchlist/${imdbID}`, {
+            method: 'DELETE',
             credentials: 'include',
             headers: {
               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ imdbID }), // pass imdbID in the request body
+            }
           });
-          
-          const data = await response.json();
-      
-          if (data.success) {
-            fetchWatchlistAndMovies()
-          }
+                
+          fetchWatchlistAndMovies()
       
         } catch (error) {
           console.error('Error adding movie to watchlist:', error);
@@ -124,20 +118,16 @@ function ProfilePage() {
 
     const handleLikedMovieRemove = async (imdbID) => {
         try {
-          const response = await fetch('http://127.0.0.1:8000/api/movie/get/dislikes/remove', {
-            method: 'POST',
+          const response = await fetch(`http://127.0.0.1:8000/api/likes/${imdbID}`, {
+            method: 'DELETE',
             credentials: 'include',
             headers: {
               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ imdbID }), // pass imdbID in the request body
+            }
           });
           
-          const data = await response.json();
       
-          if (data.success) {
-            fetchLikedMovies()
-          }
+          fetchLikedMovies()
       
         } catch (error) {
           console.error('error', error);
@@ -146,20 +136,16 @@ function ProfilePage() {
 
     const handleDislikedMovieRemove = async (imdbID) => {
         try {
-          const response = await fetch('http://127.0.0.1:8000/api/movie/get/dislikes/remove', {
-            method: 'POST',
+          const response = await fetch(`http://127.0.0.1:8000/api/dislikes/${imdbID}`, {
+            method: 'DELETE',
             credentials: 'include',
             headers: {
               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ imdbID }), // pass imdbID in the request body
+            }
           });
           
-          const data = await response.json();
       
-          if (data.success) {
-            fetchDislikedMovies()
-          }
+          fetchDislikedMovies()
       
         } catch (error) {
           console.error('error', error);
@@ -188,7 +174,7 @@ function ProfilePage() {
 
     const handleWatchlistClick = async (imdbID) => {
         try {
-          const response = await fetch('http://127.0.0.1:8000/api/movie/watchlist/add', {
+          const response = await fetch('http://127.0.0.1:8000/api/watchlist', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -210,8 +196,8 @@ function ProfilePage() {
     // For profile
     const getUserInfo = async () => {
         try {
-          const response = await fetch('http://127.0.0.1:8000/api/get/user/info', {
-            method: 'POST',
+          const response = await fetch('http://127.0.0.1:8000/api/users/current', {
+            method: 'GET',
             credentials: 'include',
             headers: {
               'Content-Type': 'application/json',
@@ -231,8 +217,8 @@ function ProfilePage() {
 
     const logoutUser = async () => {
         try {
-          const response = await fetch('http://127.0.0.1:8000/api/logout', {
-            method: 'POST',
+          const response = await fetch('http://127.0.0.1:8000/api/session', {
+            method: 'DELETE',
             credentials: 'include',
             headers: {
               'Content-Type': 'application/json',
@@ -275,8 +261,8 @@ function ProfilePage() {
             formData.append("file", selectedFile);
             formData.append("filename", userInfo.profileImg);
     
-            const uploadResponse = await fetch("http://127.0.0.1:8000/api/update/user/profile/img", {
-              method: "POST",
+            const uploadResponse = await fetch("http://127.0.0.1:8000/api/users/current/avatar", {
+              method: "PUT",
               credentials: 'include',
               body: formData
             });
@@ -287,8 +273,8 @@ function ProfilePage() {
           }
     
           // Then update other user info
-          const response = await fetch("http://127.0.0.1:8000/api/update/user/info", {
-            method: "POST",
+          const response = await fetch("http://127.0.0.1:8000/api/users/current", {
+            method: "PUT",
             credentials: 'include',
             headers: {
               "Content-Type": "application/json",
@@ -302,9 +288,9 @@ function ProfilePage() {
           });
     
           const data = await response.json();
-          if (data.success) {
-            window.location.reload();
-          }
+
+          window.location.reload();
+
         } catch (error) {
           console.error("Error:", error);
         }
@@ -313,7 +299,7 @@ function ProfilePage() {
     const generateMovieTips = async () => {
       setShowLoading(true);
       try {
-          const response = await fetch('http://127.0.0.1:8000/api/generate/movie/ideas', {
+          const response = await fetch('http://127.0.0.1:8000/api/generate_movie_ideas', {
               method: 'POST',
               credentials: 'include',
               headers: {
@@ -327,7 +313,7 @@ function ProfilePage() {
           if (data.success) {
               setMovieTips(data.movieTips);
           } else {
-              console.log(data.error, 'dawdawdawdawaw');
+              console.log(data.error);
           }
       } catch (error) {
           console.error('Error:', error);

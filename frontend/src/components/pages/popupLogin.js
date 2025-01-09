@@ -23,7 +23,7 @@ function Login() {
     }
   
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/login', {
+      const response = await fetch('http://127.0.0.1:8000/api/session', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -53,7 +53,7 @@ function Login() {
       return;
     }
 
-    const response = await fetch('http://127.0.0.1:8000/api/register', {
+    const response = await fetch('http://127.0.0.1:8000/api/users', {
       method: 'POST',
       credentials: 'include',
       headers: {
