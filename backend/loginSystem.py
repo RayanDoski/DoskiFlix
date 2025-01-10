@@ -19,7 +19,7 @@ def get_session():
 @loginSystem.route('/api/session/status', methods=['GET'])
 def get_session_status():
     if 'LoggedIn' in session:
-        return jsonify({'authenticated': True}), 200
+        return jsonify({'success': True, 'authenticated': True}), 200
     return jsonify({'authenticated': False}), 200
 
 @loginSystem.route('/api/session', methods=['POST'])
@@ -35,14 +35,14 @@ def create_session():
 
     if user and hashlib.sha256(password.encode()).hexdigest() == user.get('password'):
         session['LoggedIn'] = email
-        return jsonify({'message': 'Login successful'}), 201
+        return jsonify({'success': True, 'message': 'Login successful'}), 201
     
     return jsonify({'error': 'Invalid credentials'}), 401
 
 @loginSystem.route('/api/session', methods=['DELETE'])
 def delete_session():
     session.pop('LoggedIn', None)
-    return '', 204
+    return jsonify({'success': True})
 
 @loginSystem.route('/api/users', methods=['POST'])
 def create_user():
@@ -112,7 +112,7 @@ def update_current_user():
     with open("user.json", "w") as f:
         json.dump(users_data, f, indent=4)
     
-    return jsonify({'success': True}), 204
+    return jsonify({'success': True})
 
 @loginSystem.route('/api/users/current/avatar', methods=['PUT'])
 def update_user_avatar():
