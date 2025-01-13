@@ -14,7 +14,7 @@ def chatgpt():
         # Get the user's input
         data = request.get_json()
 
-        url = "https://open-ai21.p.rapidapi.com/conversationgpt35"
+        url = "https://open-ai21.p.rapidapi.com/chatgpt"
         payload = {
             "messages": [
                 {
@@ -55,7 +55,7 @@ def chatgpt():
         
         # Print response for debugging
         print("OpenAI API Response:", chatgpt_response.text)
-        
+
         # Check if the response is successful
         if chatgpt_response.status_code != 200:
             return jsonify({
@@ -120,3 +120,95 @@ def chatgpt():
             'success': False,
             'error': str(e)
         }), 500
+
+# @Chatgpt.route('/api/generate_movie_ideas', methods=['POST'])
+# def chatgpt():
+#     data = request.get_json()
+    
+#     url = "https://open-ai21.p.rapidapi.com/chatgpt"
+#     payload = {
+#         "messages": [
+#             {
+#                 "role": "user",
+#                 "content": f"""You are a movie recommendation AI. Your task is to provide a list of five movie recommendations. Follow these instructions exactly:
+
+#                 1. Only provide the movie titles as recommendations, strictly in JSON format. Do not include any introductory text, explanations, or comments—only the JSON object.
+#                 2. Do not include any whitespace or text outside the JSON format.
+#                 3. Tailor your recommendations to the user's preferences, which are provided in this list: {data}.
+#                 4. Always generate five recommendations. Ensure that the recommendations vary every time.
+#                 5. Your response must look *exactly* like this structure, with different movie titles every time:
+
+#                 {{
+#                     "recommendations": [
+#                         "The Hangover",
+#                         "Bridesmaids",
+#                         "Superbad",
+#                         "Forgetting Sarah Marshall",
+#                         "Anchorman: The Legend of Ron Burgundy"
+#                     ]
+#                 }}
+#                 """
+#             }
+#         ],
+#         "web_access": False
+#     }
+
+#     headers = {
+#         "x-rapidapi-key": API_KEY.x_rapidapi_key,
+#         "x-rapidapi-host": "open-ai21.p.rapidapi.com",
+#         "Content-Type": "application/json"
+#     }
+
+#     # Get ChatGPT response
+#     chatgpt_response = requests.post(url, json=payload, headers=headers)
+#     chatgpt_data = chatgpt_response.json()
+    
+#     # Extract content from the response
+#     content = chatgpt_data.get('result', '')
+    
+#     # Extract the first JSON block from markdown
+#     recommendations = []
+#     try:
+#         # Find the first JSON block between ```json and ```
+#         import re
+#         json_match = re.search(r'```json\n(.*?)\n```', content, re.DOTALL)
+#         if json_match:
+#             json_content = json_match.group(1)
+#             # Parse the JSON content
+#             parsed_data = json.loads(json_content)
+#             if 'recommendations' in parsed_data:
+#                 recommendations = parsed_data['recommendations']
+#     except Exception as e:
+#         print(f"Error parsing recommendations: {str(e)}")
+#         # Fallback: try to extract any JSON object
+#         try:
+#             json_pattern = r'\{[^{}]*\}'
+#             matches = re.findall(json_pattern, content)
+#             if matches:
+#                 for match in matches:
+#                     try:
+#                         parsed_data = json.loads(match)
+#                         if 'recommendations' in parsed_data:
+#                             recommendations = parsed_data['recommendations']
+#                             break
+#                     except:
+#                         continue
+#         except Exception as e:
+#             print(f"Fallback parsing error: {str(e)}")
+
+#     # Fetch OMDB data
+#     movies_with_details = []
+#     for movie_title in recommendations:
+#         try:
+#             url = f'https://www.omdbapi.com/?t={movie_title}&apikey={omdb_api_key}'
+#             response = requests.get(url)
+#             movie_data = response.json()
+#             if 'Error' not in movie_data:
+#                 movies_with_details.append(movie_data)
+#         except Exception as e:
+#             continue
+
+#     return jsonify({
+#         'success': True,
+#         'movieTips': movies_with_details if movies_with_details else recommendations
+#     }), 200

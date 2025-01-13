@@ -309,6 +309,9 @@ function ProfilePage() {
           });
   
           const data = await response.json();
+
+          console.log(data.movieTips);
+          console.log('Debug Info:', data.debug_info);
   
           if (data.success) {
               setMovieTips(data.movieTips);
