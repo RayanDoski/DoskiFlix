@@ -71,9 +71,9 @@ function App() {
     <>
         <Hero/>
         <MovieSlider Title="Comedy" movies={comedyMovies} category='Comedy' />
-        {/* <MovieSlider Title="Action" movies={actionMovies} category='Action' />
+        <MovieSlider Title="Action" movies={actionMovies} category='Action' />
         <MovieSlider Title="Drama" movies={dramaMovies} category='Drama' />
-        <MovieSlider Title="SciFi" movies={sciFiMovies} category='SciFi' /> */}
+        <MovieSlider Title="SciFi" movies={sciFiMovies} category='SciFi' />
     </>
   );
 }
