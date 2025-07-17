@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react';
 function useLoginCheck() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/session/status', {
+        const response = await fetch(`${apiUrl}/api/session/status`, {
           method: 'GET',
           credentials: 'include',
           headers: {

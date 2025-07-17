@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../../assets/styles/login.css';
-// import Loading from '../Loading/loading.js';
 
 function Login() {
-  
   const [show, setShow] = useState(true);
   const [showLogin, setShowLogin] = useState(true);
   const [firstname, setFirstname] = useState('');
@@ -12,6 +10,7 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const handleLogin = async (event) => {
     event.preventDefault(); // Prevent default form submission behavior
@@ -23,7 +22,7 @@ function Login() {
     }
   
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/session', {
+      const response = await fetch(`${apiUrl}/api/session`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -53,7 +52,7 @@ function Login() {
       return;
     }
 
-    const response = await fetch('http://127.0.0.1:8000/api/users', {
+    const response = await fetch(`${apiUrl}/api/users`, {
       method: 'POST',
       credentials: 'include',
       headers: {

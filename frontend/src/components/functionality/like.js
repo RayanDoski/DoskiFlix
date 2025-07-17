@@ -1,6 +1,7 @@
 const handleMovieLikeClick = async (imdbID) => {
+    const apiUrl = process.env.REACT_APP_API_URL;
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/likes', {
+      const response = await fetch(`${apiUrl}/api/likes`, {
         method: 'POST',
         credentials: 'include',
         headers: {

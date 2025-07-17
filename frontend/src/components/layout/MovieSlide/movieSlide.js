@@ -10,11 +10,12 @@ function MovieCarousel({ Title, movies, category }) {
   const [showMovieDetails, setShowMovieDetails] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [loading, setLoading] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const generateMovies = async () => {
     try {
         setLoading(true);
-        const response = await fetch('http://127.0.0.1:8000/api/omdb_batch', {
+        const response = await fetch(`${apiUrl}/api/omdb_batch`, {
             method: 'POST',
             credentials: 'include',
             headers: {

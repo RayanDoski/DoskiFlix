@@ -1,6 +1,7 @@
 from flask import Flask, send_from_directory, Blueprint
 from flask_cors import CORS
 import os 
+from dotenv import load_dotenv
 
 from loginSystem import loginSystem
 from movie import movie
@@ -12,8 +13,12 @@ app.secret_key = 'DoskiFlix12345'
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = True
 
-# Update CORS to allow specific origins and support credentials
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000", "supports_credentials": True}},
+load_dotenv()
+frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:3000")
+
+# Uppdaterad korrekt syntax för CORS
+# Notera att "origins" nu är en lista för att hantera kommaseparerade värden
+CORS(app, resources={r"/api/*": {"origins": [frontend_url], "supports_credentials": True}},
      allow_headers=["Content-Type", "Authorization"],
      methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"])
 
@@ -33,4 +38,4 @@ def serve(path):
         return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    app.run(debug=True, port=8080)
