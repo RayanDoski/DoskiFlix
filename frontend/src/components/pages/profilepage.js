@@ -20,6 +20,7 @@ function ProfilePage() {
     const [selectedFile, setSelectedFile] = useState(null);
     const [showLoading, setShowLoading] = useState(false)
     const { isLoggedIn, isLoading } = LoginCheck();
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     // for showing like and dislike messages
     const [showLikeMessage, setShowLikeMessage] = useState(false);
@@ -27,7 +28,7 @@ function ProfilePage() {
 
     const fetchWatchlistAndMovies = async () => {
       try {
-          const response = await fetch('http://127.0.0.1:8000/api/watchlist', {
+          const response = await fetch(`${apiUrl}/api/watchlist`, {
               method: 'GET',
               credentials: 'include',
               headers: {
@@ -45,7 +46,7 @@ function ProfilePage() {
 
     const fetchLikedMovies = async () => {
       try {
-          const response = await fetch('http://127.0.0.1:8000/api/likes', {
+          const response = await fetch(`${apiUrl}/api/likes`, {
               method: 'GET',
               credentials: 'include',
               headers: {
@@ -63,7 +64,7 @@ function ProfilePage() {
 
     const fetchDislikedMovies = async () => {
       try {
-          const response = await fetch('http://127.0.0.1:8000/api/dislikes', {
+          const response = await fetch(`${apiUrl}/api/dislikes`, {
               method: 'GET',
               credentials: 'include',
               headers: {
@@ -101,7 +102,7 @@ function ProfilePage() {
 
     const handleWatchlistRemove = async (imdbID) => {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/watchlist/${imdbID}`, {
+          const response = await fetch(`${apiUrl}/api/watchlist/${imdbID}`, {
             method: 'DELETE',
             credentials: 'include',
             headers: {
@@ -118,7 +119,7 @@ function ProfilePage() {
 
     const handleLikedMovieRemove = async (imdbID) => {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/likes/${imdbID}`, {
+          const response = await fetch(`${apiUrl}/api/likes/${imdbID}`, {
             method: 'DELETE',
             credentials: 'include',
             headers: {
@@ -136,7 +137,7 @@ function ProfilePage() {
 
     const handleDislikedMovieRemove = async (imdbID) => {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/api/dislikes/${imdbID}`, {
+          const response = await fetch(`${apiUrl}/api/dislikes/${imdbID}`, {
             method: 'DELETE',
             credentials: 'include',
             headers: {
@@ -174,7 +175,7 @@ function ProfilePage() {
 
     const handleWatchlistClick = async (imdbID) => {
         try {
-          const response = await fetch('http://127.0.0.1:8000/api/watchlist', {
+          const response = await fetch(`${apiUrl}/api/watchlist`, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -196,7 +197,7 @@ function ProfilePage() {
     // For profile
     const getUserInfo = async () => {
         try {
-          const response = await fetch('http://127.0.0.1:8000/api/users/current', {
+          const response = await fetch(`${apiUrl}/api/users/current`, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -217,7 +218,7 @@ function ProfilePage() {
 
     const logoutUser = async () => {
         try {
-          const response = await fetch('http://127.0.0.1:8000/api/session', {
+          const response = await fetch(`${apiUrl}/api/session`, {
             method: 'DELETE',
             credentials: 'include',
             headers: {
@@ -261,7 +262,7 @@ function ProfilePage() {
             formData.append("file", selectedFile);
             formData.append("filename", userInfo.profileImg);
     
-            const uploadResponse = await fetch("http://127.0.0.1:8000/api/users/current/avatar", {
+            const uploadResponse = await fetch(`${apiUrl}/api/users/current/avatar`, {
               method: "PUT",
               credentials: 'include',
               body: formData
@@ -273,7 +274,7 @@ function ProfilePage() {
           }
     
           // Then update other user info
-          const response = await fetch("http://127.0.0.1:8000/api/users/current", {
+          const response = await fetch(`${apiUrl}/api/users/current`, {
             method: "PUT",
             credentials: 'include',
             headers: {
@@ -299,7 +300,7 @@ function ProfilePage() {
     const generateMovieTips = async () => {
       setShowLoading(true);
       try {
-          const response = await fetch('http://127.0.0.1:8000/api/generate_movie_ideas', {
+          const response = await fetch(`${apiUrl}/api/generate_movie_ideas`, {
               method: 'POST',
               credentials: 'include',
               headers: {

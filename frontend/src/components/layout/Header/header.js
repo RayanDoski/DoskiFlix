@@ -11,6 +11,7 @@ function Header() {
   const [showLogin, setShowLogin] = useState(false);
   const [userInfo, setUserInfo] = useState([]);
   const { isLoggedIn, isLoading } = LoginCheck();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const toggleSlideMenu = () => {
     setIsOpen(!isOpen);
@@ -19,7 +20,7 @@ function Header() {
   // For profile
   const getUserInfo = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/users/current', {
+      const response = await fetch(`${apiUrl}/api/users/current`, {
         method: 'GET',
         credentials: 'include',
         headers: {

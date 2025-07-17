@@ -17,11 +17,12 @@ function HeroSection() {
   const [showLikeMessage, setShowLikeMessage] = useState(false);
   const [showDislikeMessage, setShowDislikeMessage] = useState(false);
   const { isLoggedIn, isLoading } = LoginCheck();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const generateRandomMovie = async () => {
     try {
       setShowLoading(true);
-      const response = await fetch('http://127.0.0.1:8000/api/omdb_info', {
+      const response = await fetch(`${apiUrl}/api/omdb_info`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -49,7 +50,7 @@ function HeroSection() {
 
   const handleWatchlistClick = async (imdbID) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/watchlist', {
+      const response = await fetch(`${apiUrl}/api/watchlist`, {
         method: 'POST',
         credentials: 'include',
         headers: {

@@ -18,10 +18,11 @@ function MovieDetailPopup({ data, onClose }) {
   const [showLikeMessage, setShowLikeMessage] = useState(false);
   const [showDislikeMessage, setShowDislikeMessage] = useState(false);
   const { isLoggedIn, isLoading } = LoginCheck();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const generateMovie = async () => {
     try {
-        const response = await fetch('http://127.0.0.1:8000/api/omdb_movie', {
+        const response = await fetch(`${apiUrl}/api/omdb_movie`, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -47,7 +48,7 @@ function MovieDetailPopup({ data, onClose }) {
 
   const handleWatchlistClick = async (imdbID) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/watchlist', {
+      const response = await fetch(`${apiUrl}/api/watchlist`, {
         method: 'POST',
         credentials: 'include',
         headers: {

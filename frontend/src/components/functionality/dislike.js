@@ -1,6 +1,7 @@
 const handleMovieDislikeClick = async (imdbID) => {
+    const apiUrl = process.env.REACT_APP_API_URL;
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/dislikes', {
+      const response = await fetch(`${apiUrl}/api/dislikes`, {
         method: 'POST',
         credentials: 'include',
         headers: {
