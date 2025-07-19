@@ -1,2 +1,4 @@
 # hide keys
 /backend/API_KEY.py
+
+__pycache__/
