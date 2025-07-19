@@ -61,7 +61,10 @@ function Login() {
       body: JSON.stringify({ firstname, lastname, email, password }),
     });
 
+    console.log(`Registering user: ${firstname} ${lastname}, Email: ${email}`); // Debugging line
+
     const data = await response.json();
+    console.log('Response from registration:', data); // Debugging line
     if (data.success) {
       setFirstname('');
       setLastname('');

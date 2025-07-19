@@ -74,7 +74,7 @@ def create_user():
         with open(json_file, 'w') as f:
             json.dump(users, f, indent=4)
 
-        return jsonify({'message': 'User created successfully'}), 201
+        return jsonify({'success': True,  'message': 'User created successfully'}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

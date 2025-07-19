@@ -229,7 +229,7 @@ function ProfilePage() {
           const data = await response.json();
 
           if (data.success) {
-            window.location.reload();
+            window.location.href = '/';
           }
 
         } catch (error) {
